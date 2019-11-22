@@ -4,7 +4,7 @@ import React, { Component } from "react";
 
 import { StyleSheet } from "react-native";
 
-import { ViroARScene, ViroText, ViroBox } from "react-viro";
+import { ViroARScene, ViroText, ViroBox, ViroCamera } from "react-viro";
 
 require("../secret");
 
@@ -23,6 +23,7 @@ export default class HelloWorldSceneAR extends Component {
     this.catchError = this.catchError.bind(this);
     this.pointToAR = this.pointToAR.bind(this);
     this.latLongtoMerc = this.latLongtoMerc.bind(this);
+    this.fetchedData = this.fetchedData.bind(this);
   }
   componentDidMount() {
     this.getLocation();
@@ -46,12 +47,11 @@ export default class HelloWorldSceneAR extends Component {
   }
 
   render() {
-    var imagePos = this.pointToAR(40.705109, -74.009112);
+    // var imagePos = this.pointToAR(40.705109, -74.009112);
     // // translate current device position to a lat/lng
-    console.log("imagePos", imagePos);
+
     return (
       <ViroARScene>
-        <ViroBox position={[imagePos.x, 1, imagePos.z + 50]}></ViroBox>
         <ViroCamera position={[0, 0, 0]} active={true}>
           <ViroText
             text={`${this.state.lat}, ${this.state.long}`}
@@ -95,22 +95,21 @@ export default class HelloWorldSceneAR extends Component {
       lat: position.coords.latitude,
       long: position.coords.longitude
     });
-
-    console.log("position====>", position.coords);
-    console.log("state===>", this.state);
   }
+
+  fetchedData = async () => {
+    console.log("hello");
+    let data = await fetch(
+      `https://api.foursquare.com/v2/venues/search/?client_id=${process.env.CLIENT_ID}&client_secret=${process.env.CLIENT_SECRET}&v=20180323&limit=10&ll=${this.state.lat},${this.state.long}&radius=400`
+    );
+    // console.log("state", this.state);
+    console.log("THIS IS DATA", data);
+    let place = data.json();
+    console.log("THIS IS PLACE >>>>>>", place);
+  };
 }
 // 40.704715, -74.009059
 // translate image card to xy
-
-fetchedData = async () => {
-  let data = await fetch(
-    `https://api.foursquare.com/v2/venues/search/?client_id=${process.env.CLIENT_ID}&client_secret=${process.env.CLIENT_SECRET}&v=20180323&limit=10&ll=${this.state.lat},${this.state.long}&radius=400`
-  );
-  console.log("THIS IS DATA", data);
-  let place = data.json();
-  console.log("THIS IS PLACE >>>>>>", place);
-};
 
 var styles = StyleSheet.create({
   helloWorldTextStyle: {
