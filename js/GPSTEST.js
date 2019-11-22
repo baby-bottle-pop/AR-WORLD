@@ -21,7 +21,7 @@ export default class HelloWorldSceneAR extends Component {
     this.geo_success = this.geo_success.bind(this);
     this.getLocation = this.getLocation.bind(this);
     this.catchError = this.catchError.bind(this);
-    this.transformPointToAR = this.transformPointToAR.bind(this);
+    this.pointToAR = this.pointToAR.bind(this);
     this.latLongtoMerc = this.latLongtoMerc.bind(this);
   }
   componentDidMount() {
@@ -46,7 +46,7 @@ export default class HelloWorldSceneAR extends Component {
   }
 
   render() {
-    var imagePos = this.transformPointToAR(40.705109, -74.009112);
+    var imagePos = this.pointToAR(40.705109, -74.009112);
     // // translate current device position to a lat/lng
     console.log("imagePos", imagePos);
     return (
@@ -64,22 +64,7 @@ export default class HelloWorldSceneAR extends Component {
       </ViroARScene>
     );
   }
-  // render() {
-  //   var imagePos = this.transformPointToAR(40.705221, -74.008999);
-  //   // // translate current device position to a lat/lng
-  //   console.log(imagePos);
-  //   return (
-  //     <ViroARScene>
-  //       <ViroBox
-  //         height={5}
-  //         width={5}
-  //         position={[imagePos.x, 20, imagePos.z - 0.5]}
-  //       ></ViroBox>
-  //     </ViroARScene>
-  //   );
-  // }
-
-  transformPointToAR(lat, long) {
+  pointToAR(lat, long) {
     console.log("lat", lat);
     console.log("long", long);
     let objPoint = this.latLongtoMerc(lat, long);
