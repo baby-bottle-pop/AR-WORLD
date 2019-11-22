@@ -4,7 +4,7 @@ import React, { Component } from "react";
 
 import { StyleSheet } from "react-native";
 
-import { ViroARScene, ViroText, ViroConstants, ViroCamera } from "react-viro";
+import { ViroARScene, ViroText, ViroBox } from "react-viro";
 
 export default class HelloWorldSceneAR extends Component {
   constructor() {
@@ -19,9 +19,11 @@ export default class HelloWorldSceneAR extends Component {
     this.geo_success = this.geo_success.bind(this);
     this.getLocation = this.getLocation.bind(this);
     this.catchError = this.catchError.bind(this);
+    this.transformPointToAR = this.transformPointToAR.bind(this);
+    this.latLongtoMerc = this.latLongtoMerc.bind(this);
   }
   componentDidMount() {
-    setInterval(this.getLocation, 2000);
+    this.getLocation();
   }
 
   catchError() {
@@ -31,32 +33,55 @@ export default class HelloWorldSceneAR extends Component {
   getLocation() {
     var options = { enableHighAccuracy: true, maximumAge: 0, timeout: 1000 };
     if (navigator.geolocation) {
-      var watchID = navigator.geolocation.watchPosition(
+      let watchID = navigator.geolocation.watchPosition(
         this.geo_success,
         this.catchError,
         options
       );
-      setInterval(function() {
-        navigator.geolocation.clearWatch(watchID);
-      }, 100);
     } else {
       this.catchError();
     }
   }
 
   render() {
+    var imagePos = this.transformPointToAR(40.705221, -74.008999);
+    // // translate current device position to a lat/lng
+    console.log(imagePos);
     return (
       <ViroARScene>
-        <ViroCamera position={[0, 0, 0]} active={true}>
-          <ViroText
-            text={`${this.state.lat}, ${this.state.long}`}
-            scale={[0.5, 0.5, 0.5]}
-            position={[0, 0, -3]}
-            style={styles.helloWorldTextStyle}
-          />
-        </ViroCamera>
+        <ViroBox
+          height={5}
+          width={5}
+          position={[imagePos.x, 20, imagePos.z]}
+        ></ViroBox>
       </ViroARScene>
     );
+  }
+
+  transformPointToAR(lat, long) {
+    console.log("lat", lat);
+    console.log("long", long);
+    let objPoint = this.latLongtoMerc(lat, long);
+    let objDev = this.latLongtoMerc(this.state.lat, this.state.long);
+
+    let z = objPoint.y - objDev.y;
+    let x = objPoint.x - objDev.x;
+
+    if (Math.abs(z) > 200 || Math.abs(x) > 200) {
+      x = x * 0.1;
+      z = z * 0.1;
+    }
+
+    return { x, z: -z };
+  }
+
+  latLongtoMerc(lat, long) {
+    let lonRad = (long / 180) * Math.PI;
+    let latRad = (lat / 180) * Math.PI;
+    let R = 6378137.0;
+    let x = R * lonRad;
+    let y = R * Math.log((Math.sin(latRad) + 1) / Math.cos(latRad));
+    return { x, y };
   }
 
   geo_success(position) {
@@ -65,10 +90,12 @@ export default class HelloWorldSceneAR extends Component {
       long: position.coords.longitude
     });
 
-    console.log("position====>", position);
+    console.log("position====>", position.coords);
     console.log("state===>", this.state);
   }
 }
+// 40.704715, -74.009059
+// translate image card to xy
 
 var styles = StyleSheet.create({
   helloWorldTextStyle: {

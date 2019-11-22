@@ -11,6 +11,7 @@
     "expo-constants": "^7.0.1",
     "expo-location": "^7.0.0",
     "expo-permissions": "^7.0.0",
+    "mercator-projection": "0.0.2",
     "react": "16.8.3",
     "react-native": "0.59.9",
     "react-native-geolocation-service": "^3.1.0",
