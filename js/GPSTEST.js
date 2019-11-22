@@ -33,7 +33,7 @@ export default class HelloWorldSceneAR extends Component {
   getLocation() {
     var options = { enableHighAccuracy: true, maximumAge: 0, timeout: 1000 };
     if (navigator.geolocation) {
-      let watchID = navigator.geolocation.watchPosition(
+      navigator.geolocation.getCurrentPosition(
         this.geo_success,
         this.catchError,
         options
@@ -44,19 +44,29 @@ export default class HelloWorldSceneAR extends Component {
   }
 
   render() {
-    var imagePos = this.transformPointToAR(40.705221, -74.008999);
+    var imagePos = this.transformPointToAR(40.705109, -74.009112);
     // // translate current device position to a lat/lng
-    console.log(imagePos);
+    console.log("imagePos", imagePos);
     return (
       <ViroARScene>
-        <ViroBox
-          height={5}
-          width={5}
-          position={[imagePos.x, 20, imagePos.z]}
-        ></ViroBox>
+        <ViroBox position={[imagePos.x, 1, imagePos.z + 50]}></ViroBox>
       </ViroARScene>
     );
   }
+  // render() {
+  //   var imagePos = this.transformPointToAR(40.705221, -74.008999);
+  //   // // translate current device position to a lat/lng
+  //   console.log(imagePos);
+  //   return (
+  //     <ViroARScene>
+  //       <ViroBox
+  //         height={5}
+  //         width={5}
+  //         position={[imagePos.x, 20, imagePos.z - 0.5]}
+  //       ></ViroBox>
+  //     </ViroARScene>
+  //   );
+  // }
 
   transformPointToAR(lat, long) {
     console.log("lat", lat);
