@@ -6,6 +6,8 @@ import { StyleSheet } from "react-native";
 
 import { ViroARScene, ViroText, ViroBox } from "react-viro";
 
+require("../secret");
+
 export default class HelloWorldSceneAR extends Component {
   constructor() {
     super();
@@ -50,6 +52,15 @@ export default class HelloWorldSceneAR extends Component {
     return (
       <ViroARScene>
         <ViroBox position={[imagePos.x, 1, imagePos.z + 50]}></ViroBox>
+        <ViroCamera position={[0, 0, 0]} active={true}>
+          <ViroText
+            text={`${this.state.lat}, ${this.state.long}`}
+            scale={[0.5, 0.5, 0.5]}
+            position={[0, 0, -3]}
+            onClick={this.fetchedData}
+            style={styles.helloWorldTextStyle}
+          />
+        </ViroCamera>
       </ViroARScene>
     );
   }
@@ -106,6 +117,15 @@ export default class HelloWorldSceneAR extends Component {
 }
 // 40.704715, -74.009059
 // translate image card to xy
+
+fetchedData = async () => {
+  let data = await fetch(
+    `https://api.foursquare.com/v2/venues/search/?client_id=${process.env.CLIENT_ID}&client_secret=${process.env.CLIENT_SECRET}&v=20180323&limit=10&ll=${this.state.lat},${this.state.long}&radius=400`
+  );
+  console.log("THIS IS DATA", data);
+  let place = data.json();
+  console.log("THIS IS PLACE >>>>>>", place);
+};
 
 var styles = StyleSheet.create({
   helloWorldTextStyle: {
