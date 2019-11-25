@@ -1,5 +1,7 @@
 # Notes on Code Review 1
 
+A non-exhaustive list of notes from our first code review.
+
 ## Buttons
 
 Think about overlaying your button on the AR scene, in which it's a button that the user can interact with when in the current context.
