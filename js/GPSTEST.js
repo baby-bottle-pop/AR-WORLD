@@ -42,6 +42,7 @@ export default class HelloWorldSceneAR extends Component {
   }
 
   getLocation() {
+    // Understand the differences between var and let and stick with a convention
     var options = { enableHighAccuracy: true, maximumAge: 0, timeout: 1000 };
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -127,7 +128,7 @@ export default class HelloWorldSceneAR extends Component {
       long: position.coords.longitude
     });
   }
-
+/* -------------------------------------- Generalize this ------------------------------------ */
   fetchBars = async () => {
     console.log('bar')
     let barData = await fetch(
@@ -157,6 +158,8 @@ export default class HelloWorldSceneAR extends Component {
     let foodPlace = foodData.json();
     console.log("THIS IS FOOD" , foodPlace)
   }
+
+  /* -------------------------------------- End of: Generalize this ------------------------------------ */
 
 
 }
