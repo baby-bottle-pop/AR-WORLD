@@ -9,7 +9,7 @@ import {
   ViroText,
   ViroCamera,
   ViroImage,
-  ViroScene
+  ViroBox
 } from "react-viro";
 
 require("../secret");
@@ -19,6 +19,8 @@ export default class HelloWorldSceneAR extends Component {
     super();
     // Set initial state here
     this.state = {
+      names: [],
+      locations: [],
       lat: 0,
       long: 0
     };
@@ -29,9 +31,7 @@ export default class HelloWorldSceneAR extends Component {
     this.catchError = this.catchError.bind(this);
     this.pointToAR = this.pointToAR.bind(this);
     this.latLongtoMerc = this.latLongtoMerc.bind(this);
-    this.fetchBars = this.fetchBars.bind(this);
-    this.fetchFood = this.fetchFood.bind(this)
-    this.fetchActivity = this.fetchActivity.bind(this)
+    this.fetchOptions = this.fetchOptions.bind(this);
   }
   componentDidMount() {
     this.getLocation();
@@ -67,48 +67,62 @@ export default class HelloWorldSceneAR extends Component {
             position={[0, 0, -3]}
             style={styles.helloWorldTextStyle}
           />
-    
-      <ViroImage
+
+          <ViroImage
             source={require("./res/baricon.png")}
             position={[1.3, 1.5, -5]}
-            height={.5}
-            width={.5}
-            onClick={this.fetchBars}
-           
+            height={0.5}
+            width={0.5}
+            onClick={() => {
+              this.fetchOptions("bars");
+            }}
           />
           <ViroImage
             source={require("./res/entertainment-icon-png-14.jpg")}
-            position={[1.3, .9, -5]}
-            height={.5}
-            width={.5}
-            onClick={this.fetchActivity}
-            />
-            <ViroImage
+            position={[1.3, 0.9, -5]}
+            height={0.5}
+            width={0.5}
+            onClick={() => {
+              this.fetchOptions("activity");
+            }}
+          />
+          <ViroImage
             source={require("./res/food.png")}
             position={[1.3, 2.1, -5]}
-            height={.5}
-            width={.5}
-            onClick={this.fetchFood}
-            />
-       
+            height={0.5}
+            width={0.5}
+            onClick={() => {
+              this.fetchOptions("food");
+            }}
+          />
         </ViroCamera>
+        {this.state.names.map((name, index) => {
+          let coordinates = this.state.locations[index];
+          let position = this.pointToAR(coordinates.lat, coordinates.long);
+          console.log(position);
+          return (
+            <ViroBox
+              height={3}
+              width={3}
+              key={index}
+              scale={[3, 3, 3]}
+              position={[position.x, 2, position.z]}
+            />
+          );
+        })}
       </ViroARScene>
     );
   }
+
   pointToAR(lat, long) {
-    console.log("lat", lat);
-    console.log("long", long);
     let objPoint = this.latLongtoMerc(lat, long);
     let objDev = this.latLongtoMerc(this.state.lat, this.state.long);
-
     let z = objPoint.y - objDev.y;
     let x = objPoint.x - objDev.x;
-
     if (Math.abs(z) > 200 || Math.abs(x) > 200) {
       x = x * 0.1;
       z = z * 0.1;
     }
-
     return { x, z: -z };
   }
 
@@ -128,40 +142,38 @@ export default class HelloWorldSceneAR extends Component {
     });
   }
 
-  fetchBars = async () => {
-    console.log('bar')
-    let barData = await fetch(
-      `https://api.foursquare.com/v2/venues/search/?client_id=${process.env.CLIENT_ID}&client_secret=${process.env.CLIENT_SECRET}&v=20180323&limit=10&ll=${this.state.lat},${this.state.long}&radius=500&categoryId=4bf58dd8d48988d116941735`
-    );
-    let place = barData.json();
-    console.log("THIS IS BARS >>>>>>", place);                                                                                                                                                              
+  fetchOptions = async category => {
+    let categoryId;
+    if (category === "activity") {
+      categoryId = "4d4b7104d754a06370d81259";
+    } else if (category === "food") {
+      categoryId = "4d4b7105d754a06374d81259";
+    } else if (category === "bars") {
+      categoryId = "4bf58dd8d48988d116941735";
+    }
+    try {
+      let categoryData = await fetch(
+        `https://api.foursquare.com/v2/venues/search/?client_id=${process.env.CLIENT_ID}&client_secret=${process.env.CLIENT_SECRET}&v=20180323&limit=15&ll=${this.state.lat},${this.state.long}&radius=500&categoryId=${categoryId}`
+      );
 
+      let place = await categoryData.json();
+      console.log(place);
+      let names = place.response.venues.map(n => n.name);
+      let locations = place.response.venues.map(l => ({
+        lat: l.location.lat,
+        long: l.location.lng
+      }));
+      this.setState({
+        names,
+        locations
+      });
+      console.log(names);
+      console.log(locations);
+    } catch (error) {
+      console.log("error", error);
+    }
   };
-
-  fetchActivity = async () => {
-    console.log('fun')
-    let funData = await fetch(
-      `https://api.foursquare.com/v2/venues/search/?client_id=${process.env.CLIENT_ID}&client_secret=${process.env.CLIENT_SECRET}&v=20180323&limit=10&ll=${this.state.lat},${this.state.long}&radius=500&categoryId=4d4b7104d754a06370d81259`
-
-    )
-    let funPlace = funData.json();
-    console.log("THIS IS ENTERTAINMENT" , funPlace)
-  }
-
-  fetchFood = async () => {
-    console.log('food')
-    let foodData = await fetch(
-      `https://api.foursquare.com/v2/venues/search/?client_id=${process.env.CLIENT_ID}&client_secret=${process.env.CLIENT_SECRET}&v=20180323&limit=10&ll=${this.state.lat},${this.state.long}&radius=500&categoryId=4d4b7105d754a06374d81259`
-
-    )
-    let foodPlace = foodData.json();
-    console.log("THIS IS FOOD" , foodPlace)
-  }
-
-
 }
-// 40.704715, -74.009059
-// translate image card to xy
 
 var styles = StyleSheet.create({
   helloWorldTextStyle: {
