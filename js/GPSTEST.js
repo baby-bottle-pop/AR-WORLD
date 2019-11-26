@@ -101,7 +101,8 @@ export default class HelloWorldSceneAR extends Component {
           let position = this.pointToAR(coordinates.lat, coordinates.long);
           console.log(position);
           return (
-            <ViroBox
+            <ViroText
+              text={name}
               height={3}
               width={3}
               key={index}
