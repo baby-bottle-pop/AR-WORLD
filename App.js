@@ -14,7 +14,9 @@ import {
   View,
   StyleSheet,
   PixelRatio,
-  TouchableHighlight
+  TouchableHighlight,
+  TouchableOpacity,
+  Image
 } from "react-native";
 
 import { ViroVRSceneNavigator, ViroARSceneNavigator } from "react-viro";
@@ -53,6 +55,11 @@ export default class ViroSample extends Component {
       this
     );
     this._exitViro = this._exitViro.bind(this);
+    this.fetchOptions = this.fetchOptions.bind(this);
+  }
+
+  fetchOptions() {
+    console.log("hello");
   }
 
   // Replace this function with the contents of _getVRNavigator() or _getARNavigator()
@@ -99,11 +106,88 @@ export default class ViroSample extends Component {
   // Returns the ViroARSceneNavigator which will start the AR experience
   _getARNavigator() {
     return (
-      <ViroARSceneNavigator
-        {...this.state.sharedProps}
-        initialScene={{ scene: InitialARScene }}
-        worldAlignment="GravityAndHeading"
-      />
+      <View style={localStyles.outer}>
+        <ViroARSceneNavigator
+          {...this.state.sharedProps}
+          initialScene={{ scene: InitialARScene }}
+          worldAlignment="GravityAndHeading"
+        />
+        <View
+          style={{
+            position: "absolute",
+            left: 1,
+            right: 0,
+            top: 1,
+
+            flexDirection: "row-reverse",
+            justifyContent: "space-around"
+          }}
+        >
+          <TouchableOpacity
+            style={localStyles.buttonTwo}
+            onPress={() => {
+              this.fetchOptions("bars");
+            }}
+          >
+            <Image
+              // style={localStyles.imageIcon}
+              // width={10}
+              // height={10}
+              source={require("./js/res/baricon.png")}
+              style={{
+                alignItems: "center",
+                padding: 20,
+                marginEnd: 10,
+                // justifyContent: "space-between",
+                height: 10,
+                width: 10
+              }}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={localStyles.buttonTwo}
+            onPress={() => {
+              this.fetchOptions("activity");
+            }}
+          >
+            <Image
+              // style={localStyles.imageIcon}
+              // width={10}
+              // height={10}
+              source={require("./js/res/entertainment-icon-png-14.jpg")}
+              style={{
+                alignItems: "center",
+                padding: 20,
+                marginEnd: 10,
+                // justifyContent: "space-between",
+                height: 10,
+                width: 10
+              }}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={localStyles.buttonTwo}
+            onPress={() => {
+              this.fetchOptions("food");
+            }}
+          >
+            <Image
+              // style={localStyles.imageIcon}
+              // height={10}
+              // width={10}
+              source={require("./js/res/food.png")}
+              style={{
+                alignItems: "center",
+                padding: 20,
+                marginEnd: 10,
+                // justifyContent: "space-between",
+                height: 10,
+                width: 10
+              }}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
     );
   }
 
@@ -153,6 +237,12 @@ var localStyles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "black"
   },
+  imageIcon: {
+    flex: 1,
+    width: 50,
+    height: 50,
+    resizeMode: "contain"
+  },
   titleText: {
     paddingTop: 30,
     paddingBottom: 20,
@@ -176,6 +266,12 @@ var localStyles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     borderColor: "#fff"
+  },
+  buttonTwo: {
+    alignItems: "center",
+    padding: 20,
+    marginEnd: 10,
+    justifyContent: "space-between"
   },
   exitButton: {
     height: 50,
