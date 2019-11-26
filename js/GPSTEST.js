@@ -1,22 +1,22 @@
-'use strict';
+"use strict";
 
-import React, { Component } from 'react';
-import { gettingAllThunk, getReviewsThunk } from '../client/store/business';
-import { connect } from 'react-redux';
-import { StyleSheet } from 'react-native';
-import store from '../client/store';
+import React, { Component } from "react";
+import { gettingAllThunk, getReviewsThunk } from "../client/store/business";
+import { connect } from "react-redux";
+import { StyleSheet } from "react-native";
+import store from "../client/store";
 
 import {
   ViroARScene,
   ViroText,
   ViroCamera,
   ViroImage,
-  ViroBox,
-} from 'react-viro';
+  ViroBox
+} from "react-viro";
 
-require('../secret');
+require("../secret");
 
-class disHelloWorldSceneAR extends Component {
+class AR extends Component {
   constructor(props) {
     super(props);
     // Set initial state here
@@ -24,7 +24,7 @@ class disHelloWorldSceneAR extends Component {
       names: [],
       locations: [],
       lat: 0,
-      long: 0,
+      long: 0
     };
 
     // bind 'this' to functions
@@ -36,11 +36,6 @@ class disHelloWorldSceneAR extends Component {
   }
   componentDidMount() {
     this.getLocation();
-    this.props.getReviewsThunk();
-  }
-
-  catchError() {
-    console.log('error');
   }
 
   getLocation() {
@@ -54,80 +49,6 @@ class disHelloWorldSceneAR extends Component {
     } else {
       this.catchError();
     }
-  }
-
-  render() {
-    // var imagePos = this.pointToAR(40.705109, -74.009112);
-    // // translate current device position to a lat/lng
-    console.log('State: ', this.state);
-    console.log('Props: ', this.props);
-    return (
-      <ViroARScene>
-        <ViroCamera position={[0, 0, 0]} active={true}>
-          <ViroText
-            text={`${this.state.lat}, ${this.state.long}`}
-            scale={[0.5, 0.5, 0.5]}
-            position={[0, 0, -3]}
-            style={styles.helloWorldTextStyle}
-          />
-
-          <ViroImage
-            source={require('./res/baricon.png')}
-            position={[1.3, 1.5, -5]}
-            height={0.5}
-            width={0.5}
-            onClick={() => {
-              this.props.gettingAllThunk(
-                this.state.lat,
-                this.state.long,
-                'bars'
-              );
-            }}
-          />
-          <ViroImage
-            source={require('./res/entertainment-icon-png-14.jpg')}
-            position={[1.3, 0.9, -5]}
-            height={0.5}
-            width={0.5}
-            onClick={() => {
-              this.props.gettingAllThunk(
-                this.state.lat,
-                this.state.long,
-                'activity'
-              );
-            }}
-          />
-          <ViroImage
-            source={require('./res/food.png')}
-            position={[1.3, 2.1, -5]}
-            height={0.5}
-            width={0.5}
-            onClick={() => {
-              this.props.gettingAllThunk(
-                this.state.lat,
-                this.state.long,
-                'food'
-              );
-            }}
-          />
-        </ViroCamera>
-        {this.state.names.map((name, index) => {
-          let coordinates = this.state.locations[index];
-          let position = this.pointToAR(coordinates.lat, coordinates.long);
-          console.log(position);
-          return (
-            <ViroText
-              text={name}
-              height={3}
-              width={3}
-              key={index}
-              scale={[3, 3, 3]}
-              position={[position.x, 2, position.z]}
-            />
-          );
-        })}
-      </ViroARScene>
-    );
   }
 
   pointToAR(lat, long) {
@@ -154,8 +75,46 @@ class disHelloWorldSceneAR extends Component {
   geo_success(position) {
     this.setState({
       lat: position.coords.latitude,
-      long: position.coords.longitude,
+      long: position.coords.longitude
     });
+  }
+
+  catchError() {
+    console.log("error");
+  }
+
+  render() {
+    // var imagePos = this.pointToAR(40.705109, -74.009112);
+    // // translate current device position to a lat/lng
+    console.log("State: ", this.state);
+    console.log("Props: ", this.props);
+    return (
+      <ViroARScene>
+        <ViroCamera position={[0, 0, 0]} active={true}>
+          <ViroText
+            text={`${this.state.lat}, ${this.state.long}`}
+            scale={[0.5, 0.5, 0.5]}
+            position={[0, 0, -3]}
+            style={styles.helloWorldTextStyle}
+          />
+        </ViroCamera>
+        {this.state.names.map((name, index) => {
+          let coordinates = this.state.locations[index];
+          let position = this.pointToAR(coordinates.lat, coordinates.long);
+          console.log(position);
+          return (
+            <ViroText
+              text={name}
+              height={3}
+              width={3}
+              key={index}
+              scale={[3, 3, 3]}
+              position={[position.x, 2, position.z]}
+            />
+          );
+        })}
+      </ViroARScene>
+    );
   }
 
   //   fetchOptions = async category => {
@@ -191,32 +150,15 @@ class disHelloWorldSceneAR extends Component {
   //   };
 }
 
-const mapStateToProps = state => ({
-  business: state.business,
-  reviews: state.reviews,
-});
-
-const mapDispatchToProps = dispatch => {
-  return {
-    gettingAllThunk: (lat, long, category) =>
-      dispatch(gettingAllThunk(lat, long, category)),
-    getReviewsThunk: id => dispatch(getReviewsThunk(id)),
-  };
-};
-
 var styles = StyleSheet.create({
   helloWorldTextStyle: {
-    fontFamily: 'Arial',
+    fontFamily: "Arial",
     fontSize: 30,
-    color: '#ffffff',
-    textAlignVertical: 'center',
-    textAlign: 'center',
-  },
+    color: "#ffffff",
+    textAlignVertical: "center",
+    textAlign: "center"
+  }
 });
 
-const HelloWorldSceneAR = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(disHelloWorldSceneAR);
-export default HelloWorldSceneAR;
-module.exports = HelloWorldSceneAR;
+export default AR;
+module.exports = AR;
