@@ -5,18 +5,27 @@
   "scripts": {
     "prestart": "./node_modules/react-viro/bin/run_ngrok.sh",
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
+    "dev-start": "nodemon server",
+    "test": "jest",
+    "seed": "node seed.js"
   },
   "dependencies": {
+    "apollo-server": "^2.9.12",
+    "axios": "^0.19.0",
     "expo-constants": "^7.0.1",
     "expo-location": "^7.0.0",
     "expo-permissions": "^7.0.0",
+    "express-graphql": "^0.9.0",
+    "graphql": "^14.5.8",
     "mercator-projection": "0.0.2",
+    "morgan": "^1.9.1",
     "ngrok": "^3.2.5",
+    "pg": "^7.14.0",
     "react": "16.8.3",
     "react-native": "0.59.9",
     "react-native-geolocation-service": "^3.1.0",
-    "react-viro": "2.17.0"
+    "react-viro": "2.17.0",
+    "sequelize": "^5.21.2"
   },
   "devDependencies": {
     "@babel/core": "7.7.2",
@@ -24,6 +33,7 @@
     "babel-jest": "24.9.0",
     "jest": "24.9.0",
     "metro-react-native-babel-preset": "0.57.0",
+    "nodemon": "^2.0.1",
     "react-test-renderer": "16.8.3"
   },
   "jest": {
