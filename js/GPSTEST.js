@@ -1,28 +1,30 @@
-"use strict";
+'use strict';
 
-import React, { Component } from "react";
-
-import { StyleSheet } from "react-native";
+import React, { Component } from 'react';
+import { gettingAllThunk, getReviewsThunk } from '../client/store/business';
+import { connect } from 'react-redux';
+import { StyleSheet } from 'react-native';
+import store from '../client/store';
 
 import {
   ViroARScene,
   ViroText,
   ViroCamera,
   ViroImage,
-  ViroBox
-} from "react-viro";
+  ViroBox,
+} from 'react-viro';
 
-require("../secret");
+require('../secret');
 
-export default class HelloWorldSceneAR extends Component {
-  constructor() {
-    super();
+class disHelloWorldSceneAR extends Component {
+  constructor(props) {
+    super(props);
     // Set initial state here
     this.state = {
       names: [],
       locations: [],
       lat: 0,
-      long: 0
+      long: 0,
     };
 
     // bind 'this' to functions
@@ -31,14 +33,14 @@ export default class HelloWorldSceneAR extends Component {
     this.catchError = this.catchError.bind(this);
     this.pointToAR = this.pointToAR.bind(this);
     this.latLongtoMerc = this.latLongtoMerc.bind(this);
-    this.fetchOptions = this.fetchOptions.bind(this);
   }
   componentDidMount() {
     this.getLocation();
+    this.props.getReviewsThunk();
   }
 
   catchError() {
-    console.log("error");
+    console.log('error');
   }
 
   getLocation() {
@@ -57,7 +59,8 @@ export default class HelloWorldSceneAR extends Component {
   render() {
     // var imagePos = this.pointToAR(40.705109, -74.009112);
     // // translate current device position to a lat/lng
-
+    console.log('State: ', this.state);
+    console.log('Props: ', this.props);
     return (
       <ViroARScene>
         <ViroCamera position={[0, 0, 0]} active={true}>
@@ -69,30 +72,42 @@ export default class HelloWorldSceneAR extends Component {
           />
 
           <ViroImage
-            source={require("./res/baricon.png")}
+            source={require('./res/baricon.png')}
             position={[1.3, 1.5, -5]}
             height={0.5}
             width={0.5}
             onClick={() => {
-              this.fetchOptions("bars");
+              this.props.gettingAllThunk(
+                this.state.lat,
+                this.state.long,
+                'bars'
+              );
             }}
           />
           <ViroImage
-            source={require("./res/entertainment-icon-png-14.jpg")}
+            source={require('./res/entertainment-icon-png-14.jpg')}
             position={[1.3, 0.9, -5]}
             height={0.5}
             width={0.5}
             onClick={() => {
-              this.fetchOptions("activity");
+              this.props.gettingAllThunk(
+                this.state.lat,
+                this.state.long,
+                'activity'
+              );
             }}
           />
           <ViroImage
-            source={require("./res/food.png")}
+            source={require('./res/food.png')}
             position={[1.3, 2.1, -5]}
             height={0.5}
             width={0.5}
             onClick={() => {
-              this.fetchOptions("food");
+              this.props.gettingAllThunk(
+                this.state.lat,
+                this.state.long,
+                'food'
+              );
             }}
           />
         </ViroCamera>
@@ -139,51 +154,69 @@ export default class HelloWorldSceneAR extends Component {
   geo_success(position) {
     this.setState({
       lat: position.coords.latitude,
-      long: position.coords.longitude
+      long: position.coords.longitude,
     });
   }
 
-  fetchOptions = async category => {
-    let categoryId;
-    if (category === "activity") {
-      categoryId = "4d4b7104d754a06370d81259";
-    } else if (category === "food") {
-      categoryId = "4d4b7105d754a06374d81259";
-    } else if (category === "bars") {
-      categoryId = "4bf58dd8d48988d116941735";
-    }
-    try {
-      let categoryData = await fetch(
-        `https://api.foursquare.com/v2/venues/search/?client_id=${process.env.CLIENT_ID}&client_secret=${process.env.CLIENT_SECRET}&v=20180323&limit=15&ll=${this.state.lat},${this.state.long}&radius=500&categoryId=${categoryId}`
-      );
+  //   fetchOptions = async category => {
+  //     let categoryId;
+  //     if (category === 'activity') {
+  //       categoryId = '4d4b7104d754a06370d81259';
+  //     } else if (category === 'food') {
+  //       categoryId = '4d4b7105d754a06374d81259';
+  //     } else if (category === 'bars') {
+  //       categoryId = '4bf58dd8d48988d116941735';
+  //     }
+  //     try {
+  //       let categoryData = await fetch(
+  //         `https://api.foursquare.com/v2/venues/search/?client_id=${process.env.CLIENT_ID}&client_secret=${process.env.CLIENT_SECRET}&v=20180323&limit=15&ll=${this.state.lat},${this.state.long}&radius=500&categoryId=${categoryId}`
+  //       );
 
-      let place = await categoryData.json();
-      console.log(place);
-      let names = place.response.venues.map(n => n.name);
-      let locations = place.response.venues.map(l => ({
-        lat: l.location.lat,
-        long: l.location.lng
-      }));
-      this.setState({
-        names,
-        locations
-      });
-      console.log(names);
-      console.log(locations);
-    } catch (error) {
-      console.log("error", error);
-    }
-  };
+  //       let place = await categoryData.json();
+  //       console.log(place);
+  //       let names = place.response.venues.map(n => n.name);
+  //       let locations = place.response.venues.map(l => ({
+  //         lat: l.location.lat,
+  //         long: l.location.lng,
+  //       }));
+  //       this.setState({
+  //         names,
+  //         locations,
+  //       });
+  //       console.log(names);
+  //       console.log(locations);
+  //     } catch (error) {
+  //       console.log('error', error);
+  //     }
+  //   };
 }
+
+const mapStateToProps = state => ({
+  business: state.business,
+  reviews: state.reviews,
+});
+
+const mapDispatchToProps = dispatch => {
+  return {
+    gettingAllThunk: (lat, long, category) =>
+      dispatch(gettingAllThunk(lat, long, category)),
+    getReviewsThunk: id => dispatch(getReviewsThunk(id)),
+  };
+};
 
 var styles = StyleSheet.create({
   helloWorldTextStyle: {
-    fontFamily: "Arial",
+    fontFamily: 'Arial',
     fontSize: 30,
-    color: "#ffffff",
-    textAlignVertical: "center",
-    textAlign: "center"
-  }
+    color: '#ffffff',
+    textAlignVertical: 'center',
+    textAlign: 'center',
+  },
 });
 
+const HelloWorldSceneAR = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(disHelloWorldSceneAR);
+export default HelloWorldSceneAR;
 module.exports = HelloWorldSceneAR;
