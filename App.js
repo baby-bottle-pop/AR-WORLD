@@ -21,12 +21,8 @@ import {
   Image
 } from "react-native";
 
-import { ViroARSceneNavigator } from "react-viro";
 import Login from "./js/Login";
 import ARWorld from "./js/ARWorld";
-
-// Sets the default scene you want for AR and VR
-let InitialARScene = require("./js/GPSTEST");
 
 let UNSET = "UNSET";
 let AR_NAVIGATOR_TYPE = "AR";
@@ -35,7 +31,6 @@ let LOGIN = "Login";
 export default class ViroSample extends Component {
   constructor() {
     super();
-
     this.state = {
       navigatorType: "Login"
     };
@@ -54,8 +49,6 @@ export default class ViroSample extends Component {
     console.log("hello");
   }
 
-  // Replace this function with the contents of _getVRNavigator() or _getARNavigator()
-  // if you are building a specific type of experience.
   render() {
     if (this.state.navigatorType == UNSET) {
       return this._getExperienceSelector();
@@ -66,7 +59,6 @@ export default class ViroSample extends Component {
     }
   }
 
-  // Presents the user with a choice of an AR or VR experience
   _getExperienceSelector() {
     return (
       <View style={localStyles.outer}>
@@ -78,13 +70,10 @@ export default class ViroSample extends Component {
           >
             <Text style={localStyles.buttonText}>ENTER AR WORLD</Text>
           </TouchableHighlight>
-          <TouchableHighlight></TouchableHighlight>
         </View>
       </View>
     );
   }
-
-  // Returns the ViroARSceneNavigator which will start the AR experience
   _getARNavigator() {
     return (
       <Provider store={store}>
@@ -101,8 +90,6 @@ export default class ViroSample extends Component {
     });
   }
 
-  // This function returns an anonymous/lambda function to be used
-  // by the experience selector buttons
   _getExperienceButtonOnPress(navigatorType) {
     return () => {
       this.setState({
@@ -111,7 +98,6 @@ export default class ViroSample extends Component {
     };
   }
 
-  // This function "exits" Viro by setting the navigatorType to UNSET.
   _exitViro() {
     this.setState({
       navigatorType: UNSET
