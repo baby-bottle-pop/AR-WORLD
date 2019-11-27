@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { View, TouchableOpacity, Image, StyleSheet } from "react-native";
 import { ViroARSceneNavigator } from "react-viro";
-import { gettingAllThunk, getReviewsThunk } from "../client/store/business";
+import { gettingAllThunk, allBusinessThunk } from "../client/store/business";
 import { connect } from "react-redux";
 
-let InitialARScene = require("./GPSTEST");
+let InitialARScene = require("./AllMarkers");
 class disARWorld extends Component {
   constructor(props) {
     super();
@@ -15,12 +15,11 @@ class disARWorld extends Component {
     this.geo_success = this.geo_success.bind(this);
     this.getLocation = this.getLocation.bind(this);
     this.catchError = this.catchError.bind(this);
-    this.pointToAR = this.pointToAR.bind(this);
-    this.latLongtoMerc = this.latLongtoMerc.bind(this);
   }
   componentDidMount() {
     this.getLocation();
   }
+
   getLocation() {
     var options = { enableHighAccuracy: true, maximumAge: 0, timeout: 1000 };
     if (navigator.geolocation) {
@@ -34,32 +33,12 @@ class disARWorld extends Component {
     }
   }
 
-  pointToAR(lat, long) {
-    let objPoint = this.latLongtoMerc(lat, long);
-    let objDev = this.latLongtoMerc(this.state.lat, this.state.long);
-    let z = objPoint.y - objDev.y;
-    let x = objPoint.x - objDev.x;
-    if (Math.abs(z) > 200 || Math.abs(x) > 200) {
-      x = x * 0.1;
-      z = z * 0.1;
-    }
-    return { x, z: -z };
-  }
-
-  latLongtoMerc(lat, long) {
-    let lonRad = (long / 180) * Math.PI;
-    let latRad = (lat / 180) * Math.PI;
-    let R = 6378137.0;
-    let x = R * lonRad;
-    let y = R * Math.log((Math.sin(latRad) + 1) / Math.cos(latRad));
-    return { x, y };
-  }
-
-  geo_success(position) {
-    this.setState({
+  async geo_success(position) {
+    await this.setState({
       lat: position.coords.latitude,
       long: position.coords.longitude
     });
+    this.props.allBusinessThunk(this.state.lat, this.state.long);
   }
   catchError() {
     console.log("error");
@@ -70,7 +49,14 @@ class disARWorld extends Component {
       <View style={localStyles.outer}>
         <ViroARSceneNavigator
           {...this.state.sharedProps}
-          initialScene={{ scene: InitialARScene }}
+          initialScene={{
+            scene: InitialARScene
+          }}
+          viroAppProps={{
+            businesses: this.props.businesses,
+            lat: this.state.lat,
+            long: this.state.long
+          }}
           worldAlignment="GravityAndHeading"
         />
         <View
@@ -84,22 +70,13 @@ class disARWorld extends Component {
             justifyContent: "space-around"
           }}
         >
-          <TouchableOpacity
-            style={localStyles.buttonTwo}
-            onPress={() => {
-              //   this.gettingAllThunk({...this.state});
-            }}
-          >
+          <TouchableOpacity style={localStyles.buttonTwo} onPress={() => {}}>
             <Image
-              // style={localStyles.imageIcon}
-              // width={10}
-              // height={10}
               source={require("./res/city.png")}
               style={{
                 alignItems: "center",
                 padding: 20,
                 marginEnd: 10,
-                // justifyContent: "space-between",
                 height: 10,
                 width: 10
               }}
@@ -116,15 +93,11 @@ class disARWorld extends Component {
             }}
           >
             <Image
-              // style={localStyles.imageIcon}
-              // width={10}
-              // height={10}
               source={require("./res/baricon.png")}
               style={{
                 alignItems: "center",
                 padding: 20,
                 marginEnd: 10,
-                // justifyContent: "space-between",
                 height: 10,
                 width: 10
               }}
@@ -141,15 +114,11 @@ class disARWorld extends Component {
             }}
           >
             <Image
-              // style={localStyles.imageIcon}
-              // width={10}
-              // height={10}
               source={require("./res/entertainment-icon-png-14.jpg")}
               style={{
                 alignItems: "center",
                 padding: 20,
                 marginEnd: 10,
-                // justifyContent: "space-between",
                 height: 10,
                 width: 10
               }}
@@ -166,15 +135,11 @@ class disARWorld extends Component {
             }}
           >
             <Image
-              // style={localStyles.imageIcon}
-              // height={10}
-              // width={10}
               source={require("./res/food.png")}
               style={{
                 alignItems: "center",
                 padding: 20,
                 marginEnd: 10,
-                // justifyContent: "space-between",
                 height: 10,
                 width: 10
               }}
@@ -254,7 +219,7 @@ let localStyles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-  business: state.business,
+  businesses: state.business,
   reviews: state.reviews
 });
 
@@ -262,7 +227,7 @@ const mapDispatchToProps = dispatch => {
   return {
     gettingAllThunk: (lat, long, category) =>
       dispatch(gettingAllThunk(lat, long, category)),
-    getReviewsThunk: id => dispatch(getReviewsThunk(id))
+    allBusinessThunk: (lat, long) => dispatch(allBusinessThunk(lat, long))
   };
 };
 
