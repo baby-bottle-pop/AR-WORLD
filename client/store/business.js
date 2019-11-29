@@ -1,4 +1,3 @@
-import axios from "axios";
 require("../../secret");
 
 const GET_ALL = "GET_ALL";
