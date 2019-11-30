@@ -12,8 +12,16 @@ class Login extends Component {
     };
   }
   render() {
-    console.log(this.props.login);
-    return (
+    return this.props.isLoggedIn ? (
+      <View style={styles.input}>
+        <Button
+          style={styles.button}
+          color="black"
+          title="Enter world"
+          onPress={this.props.ARNavigator}
+        />
+      </View>
+    ) : (
       <View style={styles.input}>
         <TextInput
           style={styles.username}
@@ -34,13 +42,6 @@ class Login extends Component {
           onPress={() =>
             this.props.login(this.state.email, this.state.password)
           }
-        />
-        <Button
-          style={styles.button}
-          color="black"
-          title="Enter world"
-          onPress={this.props.ARNavigator}
-          disabled={!this.props.isLoggedIn}
         />
       </View>
     );
@@ -72,7 +73,7 @@ let styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => {
-  return { isLoggedIn: !!state.userReducer.user.id };
+  return { isLoggedIn: !!state.userReducer.user.email };
 };
 
 const mapDispatchToProps = dispatch => ({

@@ -3,7 +3,7 @@ import axios from "axios";
 const GOT_USER = "GET_USER";
 
 const gotUser = user => {
-  console.log(user);
+  console.log("1", user);
   return {
     type: GOT_USER,
     user
@@ -15,17 +15,16 @@ const initialState = {
 };
 
 export const loginThunk = (email, password) => async dispatch => {
-  console.log(typeof password);
-  console.log(typeof email);
   try {
-    let res = await axios.post("http://192.168.1.120:8081/auth/login", {
+    let res = await axios.post(`http://${ip}/auth/login`, {
+      //put your comp ip address
       email,
       password
     });
     console.log("thunk", res.data);
     dispatch(gotUser(res.data));
   } catch (error) {
-    console.log("ccsadsc");
+    console.log("ccsadsc", error);
     return dispatch(gotUser({ error }));
   }
 };
@@ -33,7 +32,7 @@ export const loginThunk = (email, password) => async dispatch => {
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case GOT_USER:
-      return action.user;
+      return { user: action.user };
     default:
       return state;
   }
