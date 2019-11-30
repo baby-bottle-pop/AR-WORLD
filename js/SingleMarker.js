@@ -59,7 +59,6 @@ class SingleMarker extends Component {
         onClick={() => this.setState({ clicked: false })}
         transformBehaviors={["billboard"]}
         source={require("./res/brand.JPG")}
-        scale={[10, 15, 10]}
         opacity={0.9}
         position={[finalObj.x, 10, finalObj.z]}
       />

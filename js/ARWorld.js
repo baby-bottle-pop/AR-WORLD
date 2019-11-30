@@ -219,8 +219,8 @@ let localStyles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-  businesses: state.business,
-  reviews: state.reviews
+  businesses: state.businessReducer.business,
+  reviews: state.businessReducer.reviews
 });
 
 const mapDispatchToProps = dispatch => {
