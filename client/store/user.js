@@ -16,7 +16,7 @@ const initialState = {
 
 export const loginThunk = (email, password) => async dispatch => {
   try {
-    let res = await axios.post(`http://${ip}/auth/login`, {
+    let res = await axios.post(`http://192.168.1.120:8080/auth/login`, {
       //put your comp ip address
       email,
       password

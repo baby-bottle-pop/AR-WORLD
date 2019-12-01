@@ -6,7 +6,8 @@ import {
   ViroScene,
   ViroBox,
   ViroNode,
-  ViroImage
+  ViroImage,
+  ViroFlexView
 } from "react-viro";
 import { connect } from "react-redux";
 import { getDetailsThunk } from "../client/store/business";
@@ -14,7 +15,7 @@ import { getDetailsThunk } from "../client/store/business";
 class SingleMarker extends Component {
   constructor(props) {
     super();
-    this.state = { clicked: true };
+    this.state = { clicked: false };
     this.pointToAR = this.pointToAR.bind(this);
     this.latLongtoMerc = this.latLongtoMerc.bind(this);
   }
@@ -40,6 +41,7 @@ class SingleMarker extends Component {
   }
 
   render() {
+    // console.log(this.props.name);
     // console.log("description", this.props.details.page.pageInfo.description);
     // console.log("location", this.props.details.location); // .lat,.lng, .formattedAddress[0]
     // console.log("name", this.props.details.name);
@@ -54,15 +56,51 @@ class SingleMarker extends Component {
     // }
     let finalObj = this.pointToAR(this.props.busLat, this.props.busLong);
     console.log(finalObj);
-    return this.state.clicked ? (
-      <ViroImage
-        onClick={() => this.setState({ clicked: false })}
+    return (
+      <ViroFlexView
+        style={{ flexDirection: "column" }}
+        width={7}
+        height={10}
+        position={[finalObj.x, 2.5, finalObj.z]}
         transformBehaviors={["billboard"]}
-        source={require("./res/brand.JPG")}
-        opacity={0.9}
-        position={[finalObj.x, 10, finalObj.z]}
-      />
-    ) : null;
+      >
+        <ViroFlexView
+          onClick={() => {
+            console.log("cliclced");
+            this.setState({ clicked: !this.state.clicked });
+          }}
+          width={7}
+          height={2}
+          style={{ flexDirection: "row", flex: 0.2 }}
+          backgroundColor={`black`}
+        >
+          <ViroImage
+            source={require("./res/brand.JPG")}
+            style={{ flex: 0.25 }}
+          />
+
+          <ViroFlexView
+            style={{
+              flex: 0.75,
+              justifyContent: "center",
+              alignItems: "center"
+            }}
+          >
+            <ViroText
+              style={{}}
+              text={`${this.props.name}`}
+              // text="HELLO WORLD"
+              style={{ color: "white", marginTop: "15%" }}
+            />
+          </ViroFlexView>
+        </ViroFlexView>
+        {this.state.clicked ? (
+          <ViroFlexView backgroundColor="black" style={{ flex: 0.8 }}>
+            <ViroText style={{ color: "white" }} text="I WAS CLICKED" />
+          </ViroFlexView>
+        ) : null}
+      </ViroFlexView>
+    );
   }
 }
 
@@ -72,7 +110,8 @@ var styles = StyleSheet.create({
     fontSize: 30,
     color: "#ffffff",
     textAlignVertical: "center",
-    textAlign: "center"
+    textAlign: "center",
+    flex: 0.5
   }
 });
 
