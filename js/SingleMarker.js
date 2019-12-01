@@ -1,16 +1,7 @@
 import React, { Component } from "react";
 import { StyleSheet } from "react-native";
-import {
-  ViroText,
-  ViroButton,
-  ViroScene,
-  ViroBox,
-  ViroNode,
-  ViroImage,
-  ViroFlexView
-} from "react-viro";
-import { connect } from "react-redux";
-import { getDetailsThunk } from "../client/store/business";
+import { ViroText, ViroImage, ViroFlexView } from "react-viro";
+import Details from "./Details";
 
 class SingleMarker extends Component {
   constructor(props) {
@@ -41,19 +32,6 @@ class SingleMarker extends Component {
   }
 
   render() {
-    // console.log(this.props.name);
-    // console.log("description", this.props.details.page.pageInfo.description);
-    // console.log("location", this.props.details.location); // .lat,.lng, .formattedAddress[0]
-    // console.log("name", this.props.details.name);
-    // console.log("phone", this.props.details.formattedPhone);
-    // console.log("rating", this.props.details.rating);
-    // console.log("hours", this.props.details.hours.timeframes); // is an array timeframes[i].days, and .open[0].renderedTime
-    // console.log("review", this.props.details.tips.groups[0].items[0].text); // a random review
-    // {
-    //   this.props.details.venue
-    //     ? console.log(this.props.details.venue.location)
-    //     : console.log("broken");
-    // }
     let finalObj = this.pointToAR(this.props.busLat, this.props.busLong);
     console.log(finalObj);
     return (
@@ -61,7 +39,7 @@ class SingleMarker extends Component {
         style={{ flexDirection: "column" }}
         width={7}
         height={10}
-        position={[finalObj.x, 2.5, finalObj.z]}
+        position={[finalObj.x, 2, finalObj.z]}
         transformBehaviors={["billboard"]}
       >
         <ViroFlexView
@@ -94,11 +72,7 @@ class SingleMarker extends Component {
             />
           </ViroFlexView>
         </ViroFlexView>
-        {this.state.clicked ? (
-          <ViroFlexView backgroundColor="black" style={{ flex: 0.8 }}>
-            <ViroText style={{ color: "white" }} text="I WAS CLICKED" />
-          </ViroFlexView>
-        ) : null}
+        {this.state.clicked ? <Details id={this.props.id} /> : null}
       </ViroFlexView>
     );
   }
@@ -115,9 +89,4 @@ var styles = StyleSheet.create({
   }
 });
 
-const mapStateToProps = state => ({ details: state.details });
-const mapDispatchToProps = dispatch => ({
-  getDetails: id => dispatch(getDetailsThunk(id))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(SingleMarker);
+export default SingleMarker;
