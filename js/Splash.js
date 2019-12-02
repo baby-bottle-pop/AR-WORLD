@@ -20,6 +20,10 @@ export default class Splash extends Component {
           <Image style={styles.image} source={require("./res/brand.JPG")} />
           <Image style={styles.image} source={require("./res/martin.jpg")} />
           <Image style={styles.image} source={require("./res/Alex.jpg")} />
+          {/* <Image style={styles.image} source={require("./res/baricon.png")} />
+          <Image style={styles.image} source={require("./res/city.png")} />
+          <Image style={styles.image} source={require("./res/food.png")} />
+          <Image style={styles.image} source={require("./res/entertainment-icon-png-14.jpg")} /> */}
         </View>
       </View>
     );
@@ -31,7 +35,7 @@ let styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#4F6D7A"
+    backgroundColor: "#c5b2d8"
   },
   heading: {
     fontSize: 75,

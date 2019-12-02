@@ -53,9 +53,9 @@ class SingleMarker extends Component {
         position={[finalObj.x, 0, finalObj.z]}
         transformBehaviors={["billboard"]}
         onHover={isHovering => {
-          if (!isHovering) {
-            this.setState({ clicked: false });
-          }
+          // if (!isHovering) {
+          //   this.setState({ clicked: false });
+          // }
         }}
       >
         {this.state.clicked ? (
