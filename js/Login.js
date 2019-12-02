@@ -12,7 +12,7 @@ class Login extends Component {
     };
   }
   render() {
-    return this.props.isLoggedIn ? (
+    return !this.props.isLoggedIn ? (
       <View style={styles.input}>
         <Button
           style={styles.button}

@@ -12,27 +12,27 @@ import {
   ViroText,
   ViroCamera,
   ViroImage,
-  ViroBox
+  ViroBox,
+  ViroFlexView
 } from "react-viro";
 
 require("../secret");
 
 const AR = props => {
   const { businesses, lat, long } = props.sceneNavigator.viroAppProps;
-  console.log("cecerc", props);
+
   return (
-    <ViroARScene>
-      <ViroCamera position={[0, 0, 0]} active={true}>
+    <ViroARScene style={{ flex: 1 }}>
+      {/* <ViroCamera position={[0, 0, 0]} active={true}>
         <ViroText
           text={`${lat}, ${long}`}
           scale={[0.5, 0.5, 0.5]}
           position={[0, 0, -3]}
           style={styles.helloWorldTextStyle}
         />
-      </ViroCamera>
+      </ViroCamera> */}
       {businesses.length
         ? businesses.map(business => {
-            console.log(business.id);
             return (
               <SingleMarker
                 key={business.id}
@@ -42,6 +42,8 @@ const AR = props => {
                 name={business.name}
                 busLat={business.location.lat}
                 busLong={business.location.lng}
+                // busLat={40.759355}
+                // busLong={-73.911742}
               />
             );
           })

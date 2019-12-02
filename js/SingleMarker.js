@@ -1,20 +1,12 @@
 import React, { Component } from "react";
 import { StyleSheet } from "react-native";
-import {
-  ViroText,
-  ViroButton,
-  ViroScene,
-  ViroBox,
-  ViroNode,
-  ViroImage
-} from "react-viro";
-import { connect } from "react-redux";
-import { getDetailsThunk } from "../client/store/business";
+import { ViroText, ViroImage, ViroFlexView } from "react-viro";
+import Details from "./Details";
 
 class SingleMarker extends Component {
   constructor(props) {
     super();
-    this.state = { clicked: true };
+    this.state = { clicked: false };
     this.pointToAR = this.pointToAR.bind(this);
     this.latLongtoMerc = this.latLongtoMerc.bind(this);
   }
@@ -40,29 +32,70 @@ class SingleMarker extends Component {
   }
 
   render() {
-    // console.log("description", this.props.details.page.pageInfo.description);
-    // console.log("location", this.props.details.location); // .lat,.lng, .formattedAddress[0]
-    // console.log("name", this.props.details.name);
-    // console.log("phone", this.props.details.formattedPhone);
-    // console.log("rating", this.props.details.rating);
-    // console.log("hours", this.props.details.hours.timeframes); // is an array timeframes[i].days, and .open[0].renderedTime
-    // console.log("review", this.props.details.tips.groups[0].items[0].text); // a random review
-    // {
-    //   this.props.details.venue
-    //     ? console.log(this.props.details.venue.location)
-    //     : console.log("broken");
-    // }
     let finalObj = this.pointToAR(this.props.busLat, this.props.busLong);
     console.log(finalObj);
-    return this.state.clicked ? (
-      <ViroImage
-        onClick={() => this.setState({ clicked: false })}
+    return (
+      <ViroFlexView
+        style={{ flexDirection: "column" }}
+        width={7}
+        height={20}
+        position={[finalObj.x, 2, finalObj.z]}
         transformBehaviors={["billboard"]}
-        source={require("./res/brand.JPG")}
-        opacity={0.9}
-        position={[finalObj.x, 10, finalObj.z]}
-      />
-    ) : null;
+        onHover={isHovering => {
+          if (!isHovering) {
+            this.setState({ clicked: false });
+          }
+        }}
+      >
+        {this.state.clicked ? (
+          <ViroImage
+            style={{ flex: 0.05 }}
+            width={1}
+            source={require("../js/res/remove.png")}
+            onClick={() => {
+              this.setState({ clicked: false });
+            }}
+          />
+        ) : null}
+        <ViroFlexView
+          style={{ flexDirection: "column", flex: 0.95, marginTop: "10%" }}
+          position={[finalObj.x, 2, finalObj.z]}
+          transformBehaviors={["billboard"]}
+        >
+          <ViroFlexView
+            onClick={() => {
+              this.setState({ clicked: true });
+            }}
+            style={{ flexDirection: "row", flex: 0.1 }}
+            backgroundColor={`black`}
+          >
+            <ViroImage
+              source={require("./res/brand.JPG")}
+              style={{ flex: 0.25 }}
+            />
+
+            <ViroFlexView
+              style={{
+                flex: 0.75,
+                justifyContent: "center",
+                alignItems: "center"
+              }}
+            >
+              <ViroText
+                text={`${this.props.name}`}
+                // text="HELLO WORLD"
+                style={{
+                  color: "white",
+                  marginTop: "15%",
+                  textAlign: "center"
+                }}
+              />
+            </ViroFlexView>
+          </ViroFlexView>
+          {this.state.clicked ? <Details id={this.props.id} /> : null}
+        </ViroFlexView>
+      </ViroFlexView>
+    );
   }
 }
 
@@ -72,13 +105,9 @@ var styles = StyleSheet.create({
     fontSize: 30,
     color: "#ffffff",
     textAlignVertical: "center",
-    textAlign: "center"
+    textAlign: "center",
+    flex: 0.5
   }
 });
 
-const mapStateToProps = state => ({ details: state.details });
-const mapDispatchToProps = dispatch => ({
-  getDetails: id => dispatch(getDetailsThunk(id))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(SingleMarker);
+export default SingleMarker;
