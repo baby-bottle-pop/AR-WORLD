@@ -3,7 +3,6 @@ import axios from "axios";
 const GOT_USER = "GET_USER";
 
 const gotUser = user => {
-  console.log("1", user);
   return {
     type: GOT_USER,
     user
@@ -21,10 +20,9 @@ export const loginThunk = (email, password) => async dispatch => {
       email,
       password
     });
-    console.log("thunk", res.data);
+
     dispatch(gotUser(res.data));
   } catch (error) {
-    console.log("ccsadsc", error);
     return dispatch(gotUser({ error }));
   }
 };

@@ -54,14 +54,13 @@ export const gettingAllThunk = (lat, long, category) => async dispatch => {
 
 export const allBusinessThunk = (lat, long) => async dispatch => {
   try {
-    console.log(lat, long);
     const data = await fetch(
       `https://api.foursquare.com/v2/venues/search/?client_id=${process.env.CLIENT_ID}&client_secret=${process.env.CLIENT_SECRET}&v=20180323&limit=8&ll=${lat},${long}&radius=500`
     );
     const placesData = await data.json();
-    console.log(placesData);
+
     const venues = placesData.response.venues;
-    console.log(venues);
+
     dispatch(allBusiness(venues));
   } catch (error) {
     console.log(error);
@@ -74,7 +73,7 @@ export const getDetailsThunk = id => async dispatch => {
       `https://api.foursquare.com/v2/venues/${id}/?client_id=UDXQIU2Q23T3EE3SN2YCNVG3CWNTO0ARA505EJUHWJ2030EO&client_secret=1VNOKM14FEZDGT3DTFL4LTNOHDPR5WFF4GI5VSIBCHI3DSNY&v=20191122`
     );
     const resData = await data.json();
-    console.log(resData.response);
+
     dispatch(getDetails(resData.response));
   } catch (error) {
     console.log(error);

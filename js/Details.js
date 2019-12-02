@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { StyleSheet } from "react-native";
 import { ViroFlexView, ViroText } from "react-viro";
 import { connect } from "react-redux";
 import { getDetailsThunk } from "../client/store/business";
@@ -9,21 +10,47 @@ class Details extends Component {
   }
 
   componentDidMount() {
-    console.log("moiunted");
     this.props.getDetails(this.props.id);
   }
 
   render() {
-    console.log(this.props.details);
+    const { venue } = this.props.details;
+    console.log(venue);
     let description;
-    if (this.props.details.venue) {
-      if (this.props.details.venue.description) {
-        description = this.props.details.venue.description;
-      } else if (this.props.details.venue.page) {
-        description = this.props.details.venue.page.pageInfo.description;
+    let address;
+    let rating;
+    let phone;
+    let hours;
+    let review;
+
+    if (venue) {
+      if (venue.description) {
+        description = venue.description;
+      } else if (venue.page) {
+        description = venue.page.pageInfo.description;
       } else {
         description = "No Description Available";
       }
+      address = venue.location
+        ? venue.location.formattedAddress
+        : "No address available";
+      rating = venue.rating ? venue.rating : "No Ratings";
+      phone = venue.formattedPhone
+        ? venue.formattedPhone
+        : "No phone number Available";
+      hours = venue.hours ? venue.hours.status : "No Hours Available";
+      review = venue.tips.groups[0].items[0]
+        ? venue.tips.groups[0].items[0].text
+        : "No Reviews Yet";
+    } else {
+      description =
+        "loremcwemcniqebrvibeqkvnwelvnlnvlnelvnloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelv";
+
+      address = "ASIA";
+      rating = 10;
+      phone = "1213143414";
+      hours = "open till 7pm";
+      review = "best place ever";
     }
 
     // console.log("description", this.props.details.page.pageInfo.description);
@@ -39,8 +66,26 @@ class Details extends Component {
     //     : console.log("broken");
     // }
     return (
-      <ViroFlexView backgroundColor="black" style={{ flex: 0.8 }}>
-        <ViroText style={{ color: "white" }} text={`${description}`} />
+      <ViroFlexView
+        backgroundColor="black"
+        style={{ flex: 0.8, marginTop: "10%" }}
+      >
+        <ViroText style={styles.subHeadings} text="Description" />
+        <ViroText
+          style={{ color: "white" }}
+          text={`${description}`}
+          textLineBreakMode="charwrap"
+        />
+        <ViroText style={styles.subHeadings} text="Address" />
+        <ViroText style={{ color: "white" }} text={`${address}`} />
+        <ViroText style={styles.subHeadings} text="Rating" />
+        <ViroText style={{ color: "white" }} text={`${rating}`} />
+        <ViroText style={styles.subHeadings} text="Phone Number" />
+        <ViroText style={{ color: "white" }} text={`${phone}`} />
+        <ViroText style={styles.subHeadings} text="Hours" />
+        <ViroText style={{ color: "white" }} text={`${hours}`} />
+        <ViroText style={styles.subHeadings} text="Review" />
+        <ViroText style={{ color: "white" }} text={`${review}`} />
       </ViroFlexView>
     );
   }
@@ -48,6 +93,12 @@ class Details extends Component {
 const mapStateToProps = state => ({ details: state.businessReducer.details });
 const mapDispatchToProps = dispatch => ({
   getDetails: id => dispatch(getDetailsThunk(id))
+});
+
+const styles = StyleSheet.create({
+  subHeadings: {
+    fontSize: 24
+  }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Details);

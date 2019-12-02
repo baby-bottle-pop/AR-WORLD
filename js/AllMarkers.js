@@ -20,7 +20,7 @@ require("../secret");
 
 const AR = props => {
   const { businesses, lat, long } = props.sceneNavigator.viroAppProps;
-  console.log("cecerc", props);
+
   return (
     <ViroARScene style={{ flex: 1 }}>
       {/* <ViroCamera position={[0, 0, 0]} active={true}>
@@ -33,7 +33,6 @@ const AR = props => {
       </ViroCamera> */}
       {businesses.length
         ? businesses.map(business => {
-            console.log(business.id);
             return (
               <SingleMarker
                 key={business.id}
