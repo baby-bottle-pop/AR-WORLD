@@ -14,8 +14,20 @@ class Details extends Component {
   }
 
   render() {
-    const { venue } = this.props.details;
-    console.log(venue);
+    let allDetails = this.props.details;
+    console.log(allDetails);
+    let details = allDetails.filter(detail => {
+      console.log("store", detail);
+      console.log("id", this.props.id);
+      return detail.venue.id === this.props.id;
+    });
+    let venue;
+    if (details.length) {
+      console.log("the details", details[0].venue);
+      venue = details[0].venue;
+      console.log(venue);
+    }
+
     let description;
     let address;
     let rating;
@@ -44,7 +56,7 @@ class Details extends Component {
         : "No Reviews Yet";
     } else {
       description =
-        "loremcwemcniqebrvibeqkvnwelvnlnvlnelvnloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelv";
+        "loremcwemcniqebrvibeqkvnwelvnlnvlnelvnloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvabvcwks";
 
       address = "ASIA";
       rating = 10;
@@ -67,25 +79,22 @@ class Details extends Component {
     // }
     return (
       <ViroFlexView
-        backgroundColor="black"
+        backgroundColor="white"
         style={{ flex: 0.8, marginTop: "10%" }}
+        opacity={0.85}
       >
         <ViroText style={styles.subHeadings} text="Description" />
-        <ViroText
-          style={{ color: "white" }}
-          text={`${description}`}
-          textLineBreakMode="charwrap"
-        />
+        <ViroText style={styles.info} text={`${description}`} />
         <ViroText style={styles.subHeadings} text="Address" />
-        <ViroText style={{ color: "white" }} text={`${address}`} />
+        <ViroText style={styles.info} text={`${address}`} />
         <ViroText style={styles.subHeadings} text="Rating" />
-        <ViroText style={{ color: "white" }} text={`${rating}`} />
+        <ViroText style={styles.info} text={`${rating}`} />
         <ViroText style={styles.subHeadings} text="Phone Number" />
-        <ViroText style={{ color: "white" }} text={`${phone}`} />
+        <ViroText style={styles.info} text={`${phone}`} />
         <ViroText style={styles.subHeadings} text="Hours" />
-        <ViroText style={{ color: "white" }} text={`${hours}`} />
+        <ViroText style={styles.info} text={`${hours}`} />
         <ViroText style={styles.subHeadings} text="Review" />
-        <ViroText style={{ color: "white" }} text={`${review}`} />
+        <ViroText style={styles.info} text={`${review}`} />
       </ViroFlexView>
     );
   }
@@ -97,7 +106,19 @@ const mapDispatchToProps = dispatch => ({
 
 const styles = StyleSheet.create({
   subHeadings: {
-    fontSize: 24
+    fontSize: 30,
+    textAlign: "center",
+    fontWeight: "bold",
+    fontFamily: "Cochin",
+    color: "#b22222"
+  },
+  info: {
+    fontSize: 20,
+    fontWeight: "bold",
+    fontFamily: "Cochin",
+    alignItems: "flex-start",
+    color: "#0000cd",
+    textAlign: "center"
   }
 });
 

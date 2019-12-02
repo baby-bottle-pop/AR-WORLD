@@ -38,7 +38,12 @@ class disARWorld extends Component {
       lat: position.coords.latitude,
       long: position.coords.longitude
     });
-    this.props.allBusinessThunk(this.state.lat, this.state.long);
+    this.props.allBusinessThunk(
+      this.state.lat,
+      this.state.long,
+      "#6b8e23",
+      "/res/city.png"
+    );
   }
   catchError() {
     console.log("error");
@@ -55,7 +60,9 @@ class disARWorld extends Component {
           viroAppProps={{
             businesses: this.props.businesses,
             lat: this.state.lat,
-            long: this.state.long
+            long: this.state.long,
+            color: this.props.color,
+            icon: this.props.icon
           }}
           worldAlignment="GravityAndHeading"
         />
@@ -64,13 +71,23 @@ class disARWorld extends Component {
             position: "absolute",
             left: 1,
             right: 0,
-            top: 1,
+            top: 7,
 
             flexDirection: "row-reverse",
             justifyContent: "space-around"
           }}
         >
-          <TouchableOpacity style={localStyles.buttonTwo} onPress={() => {}}>
+          <TouchableOpacity
+            style={localStyles.buttonTwo}
+            onPress={() => {
+              this.props.allBusinessThunk(
+                this.state.lat,
+                this.state.long,
+                "#6b8e23",
+                "/res/city.png"
+              );
+            }}
+          >
             <Image
               source={require("./res/city.png")}
               style={{
@@ -78,7 +95,8 @@ class disARWorld extends Component {
                 padding: 20,
                 marginEnd: 10,
                 height: 10,
-                width: 10
+                width: 10,
+                tintColor: "#6b8e23"
               }}
             />
           </TouchableOpacity>
@@ -88,7 +106,9 @@ class disARWorld extends Component {
               this.props.gettingAllThunk(
                 this.state.lat,
                 this.state.long,
-                "bars"
+                "bars",
+                "#dda0dd",
+                "/res/baricon.png"
               );
             }}
           >
@@ -99,7 +119,8 @@ class disARWorld extends Component {
                 padding: 20,
                 marginEnd: 10,
                 height: 10,
-                width: 10
+                width: 10,
+                tintColor: "#dda0dd"
               }}
             />
           </TouchableOpacity>
@@ -109,7 +130,9 @@ class disARWorld extends Component {
               this.props.gettingAllThunk(
                 this.state.lat,
                 this.state.long,
-                "activity"
+                "activity",
+                "#ff69b4",
+                "/res/entertainment-icon-png-14.jpg"
               );
             }}
           >
@@ -120,7 +143,8 @@ class disARWorld extends Component {
                 padding: 20,
                 marginEnd: 10,
                 height: 10,
-                width: 10
+                width: 10,
+                tintColor: "#ff69b4"
               }}
             />
           </TouchableOpacity>
@@ -130,7 +154,9 @@ class disARWorld extends Component {
               this.props.gettingAllThunk(
                 this.state.lat,
                 this.state.long,
-                "food"
+                "food",
+                "#1e90ff",
+                "/res/food.png"
               );
             }}
           >
@@ -141,7 +167,8 @@ class disARWorld extends Component {
                 padding: 20,
                 marginEnd: 10,
                 height: 10,
-                width: 10
+                width: 10,
+                tintColor: "#1e90ff"
               }}
             />
           </TouchableOpacity>
@@ -220,14 +247,17 @@ let localStyles = StyleSheet.create({
 
 const mapStateToProps = state => ({
   businesses: state.businessReducer.business,
-  reviews: state.businessReducer.reviews
+  reviews: state.businessReducer.reviews,
+  color: state.businessReducer.color,
+  icon: state.businessReducer.icon
 });
 
 const mapDispatchToProps = dispatch => {
   return {
-    gettingAllThunk: (lat, long, category) =>
-      dispatch(gettingAllThunk(lat, long, category)),
-    allBusinessThunk: (lat, long) => dispatch(allBusinessThunk(lat, long))
+    gettingAllThunk: (lat, long, category, color, icon) =>
+      dispatch(gettingAllThunk(lat, long, category, color, icon)),
+    allBusinessThunk: (lat, long, color, icon) =>
+      dispatch(allBusinessThunk(lat, long, color, icon))
   };
 };
 
