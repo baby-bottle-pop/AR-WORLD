@@ -14,8 +14,19 @@ class Details extends Component {
   }
 
   render() {
-    const { venue } = this.props.details;
-    console.log(venue);
+    let allDetails = this.props.details;
+    let details = allDetails.filter(detail => {
+      console.log("store", detail.venue.id);
+      console.log("id", this.props.id);
+      return detail.venue.id === this.props.id;
+    });
+    let venue;
+    if (details.length) {
+      console.log("the details", details[0].venue);
+      venue = details[0].venue;
+      console.log(venue);
+    }
+
     let description;
     let address;
     let rating;
@@ -44,7 +55,7 @@ class Details extends Component {
         : "No Reviews Yet";
     } else {
       description =
-        "loremcwemcniqebrvibeqkvnwelvnlnvlnelvnloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelv";
+        "loremcwemcniqebrvibeqkvnwelvnlnvlnelvnloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvabvcwks";
 
       address = "ASIA";
       rating = 10;
@@ -71,11 +82,7 @@ class Details extends Component {
         style={{ flex: 0.8, marginTop: "10%" }}
       >
         <ViroText style={styles.subHeadings} text="Description" />
-        <ViroText
-          style={{ color: "white" }}
-          text={`${description}`}
-          textLineBreakMode="charwrap"
-        />
+        <ViroText style={{ color: "blue" }} text={`${description}`} />
         <ViroText style={styles.subHeadings} text="Address" />
         <ViroText style={{ color: "white" }} text={`${address}`} />
         <ViroText style={styles.subHeadings} text="Rating" />
