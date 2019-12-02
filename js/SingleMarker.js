@@ -32,6 +32,17 @@ class SingleMarker extends Component {
   }
 
   render() {
+    let icon =
+      this.props.icon === "/res/city.png"
+        ? require("../js/res/city.png")
+        : this.props.icon === "/res/baricon.png"
+        ? require("../js/res/baricon.png")
+        : this.props.icon === "/res/entertainment-icon-png-14.jpg"
+        ? require("../js/res/entertainment-icon-png-14.jpg")
+        : this.props.icon === "/res/food.png"
+        ? require("../js/res/food.png")
+        : null;
+
     let finalObj = this.pointToAR(this.props.busLat, this.props.busLong);
     console.log(finalObj);
     return (
@@ -67,12 +78,9 @@ class SingleMarker extends Component {
               this.setState({ clicked: true });
             }}
             style={{ flexDirection: "row", flex: 0.1 }}
-            backgroundColor={`black`}
+            backgroundColor={this.props.color}
           >
-            <ViroImage
-              source={require("./res/brand.JPG")}
-              style={{ flex: 0.25 }}
-            />
+            <ViroImage source={icon} style={{ flex: 0.25 }} />
 
             <ViroFlexView
               style={{
@@ -85,8 +93,11 @@ class SingleMarker extends Component {
                 text={`${this.props.name}`}
                 // text="HELLO WORLD"
                 style={{
+                  fontFamily: "Cochin",
+                  fontSize: 25,
+                  fontWeight: "bold",
                   color: "white",
-                  marginTop: "15%",
+                  marginTop: "10%",
                   textAlign: "center"
                 }}
               />
@@ -98,16 +109,5 @@ class SingleMarker extends Component {
     );
   }
 }
-
-var styles = StyleSheet.create({
-  helloWorldTextStyle: {
-    fontFamily: "Arial",
-    fontSize: 30,
-    color: "#ffffff",
-    textAlignVertical: "center",
-    textAlign: "center",
-    flex: 0.5
-  }
-});
 
 export default SingleMarker;
