@@ -4,17 +4,21 @@ const GET_ALL = "GET_ALL";
 const GET_DETAILS = "GET_DETAILS";
 const ALL_BUSINESS = "ALL_BUSINESS";
 
-const allBusiness = business => {
+const allBusiness = (business, color, icon) => {
   return {
     type: ALL_BUSINESS,
-    business
+    business,
+    color,
+    icon
   };
 };
 
-const gettingAll = business => {
+const gettingAll = (business, color, icon) => {
   return {
     type: GET_ALL,
-    business
+    business,
+    color,
+    icon
   };
 };
 
@@ -27,10 +31,18 @@ const getDetails = details => {
 
 const initialState = {
   business: [],
-  details: []
+  color: "",
+  details: [],
+  icon: ""
 };
 
-export const gettingAllThunk = (lat, long, category) => async dispatch => {
+export const gettingAllThunk = (
+  lat,
+  long,
+  category,
+  color,
+  icon
+) => async dispatch => {
   try {
     let categoryId;
     if (category === "activity") {
@@ -46,13 +58,13 @@ export const gettingAllThunk = (lat, long, category) => async dispatch => {
     );
     const placesData = await data.json();
     const venues = placesData.response.venues;
-    dispatch(gettingAll(venues));
+    dispatch(gettingAll(venues, color, icon));
   } catch (error) {
     console.error(error);
   }
 };
 
-export const allBusinessThunk = (lat, long) => async dispatch => {
+export const allBusinessThunk = (lat, long, color, icon) => async dispatch => {
   try {
     const data = await fetch(
       `https://api.foursquare.com/v2/venues/search/?client_id=${process.env.CLIENT_ID}&client_secret=${process.env.CLIENT_SECRET}&v=20180323&limit=8&ll=${lat},${long}&radius=500`
@@ -61,7 +73,7 @@ export const allBusinessThunk = (lat, long) => async dispatch => {
 
     const venues = placesData.response.venues;
 
-    dispatch(allBusiness(venues));
+    dispatch(allBusiness(venues, color, icon));
   } catch (error) {
     console.log(error);
   }
@@ -70,9 +82,10 @@ export const allBusinessThunk = (lat, long) => async dispatch => {
 export const getDetailsThunk = id => async dispatch => {
   try {
     const data = await fetch(
-      `https://api.foursquare.com/v2/venues/${id}/?client_id=UDXQIU2Q23T3EE3SN2YCNVG3CWNTO0ARA505EJUHWJ2030EO&client_secret=1VNOKM14FEZDGT3DTFL4LTNOHDPR5WFF4GI5VSIBCHI3DSNY&v=20191122`
+      `https://api.foursquare.com/v2/venues/${id}/?client_id=${process.env.CLIENT_ID}&client_secret=${process.env.CLIENT_SECRET}&v=20191122`
     );
     const resData = await data.json();
+    console.log("THIUNKKKKKKKKK", resData.response);
 
     dispatch(getDetails(resData.response));
   } catch (error) {
@@ -85,7 +98,9 @@ export default function businessReducer(state = initialState, action) {
     case GET_ALL:
       return {
         ...state,
-        business: action.business
+        business: action.business,
+        color: action.color,
+        icon: action.icon
       };
     case GET_DETAILS:
       return {
@@ -95,7 +110,9 @@ export default function businessReducer(state = initialState, action) {
     case ALL_BUSINESS:
       return {
         ...state,
-        business: action.business
+        business: action.business,
+        color: action.color,
+        icon: action.icon
       };
     default:
       return state;
