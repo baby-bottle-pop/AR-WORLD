@@ -39,7 +39,7 @@ class SingleMarker extends Component {
         style={{ flexDirection: "column" }}
         width={7}
         height={20}
-        position={[finalObj.x, 2, finalObj.z]}
+        position={[finalObj.x, 0, finalObj.z]}
         transformBehaviors={["billboard"]}
         onHover={isHovering => {
           if (!isHovering) {

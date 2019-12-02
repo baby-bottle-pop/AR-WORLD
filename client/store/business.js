@@ -27,7 +27,7 @@ const getDetails = details => {
 
 const initialState = {
   business: [],
-  details: {}
+  details: []
 };
 
 export const gettingAllThunk = (lat, long, category) => async dispatch => {
@@ -90,7 +90,7 @@ export default function businessReducer(state = initialState, action) {
     case GET_DETAILS:
       return {
         ...state,
-        details: action.details
+        details: [...state.details, action.details]
       };
     case ALL_BUSINESS:
       return {
