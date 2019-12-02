@@ -15,7 +15,8 @@ export default class App extends Component {
   constructor() {
     super();
     this.state = {
-      navigatorType: "SPLASH"
+      // navigatorType: "SPLASH"
+      navigatorType: "AR"
     };
     this.LoginNavigator = this.LoginNavigator.bind(this);
     this.ARNavigator = this.ARNavigator.bind(this);
