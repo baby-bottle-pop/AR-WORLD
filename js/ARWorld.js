@@ -12,7 +12,7 @@ class disARWorld extends Component {
     this.state = {
       lat: 0,
       long: 0,
-      clicked: true,
+      clicked: false,
     };
     this.geo_success = this.geo_success.bind(this);
     this.getLocation = this.getLocation.bind(this);

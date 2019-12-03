@@ -24,6 +24,7 @@ export const allReviewsThunk = () => async dispatch => {
   }
 };
 
+// put your computer's ip into here
 export const getReviewsThunk = id => async dispatch => {
   try {
     const { data } = await axios.get(`/api/reviews/${id}`);
