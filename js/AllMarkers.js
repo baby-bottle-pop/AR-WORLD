@@ -1,11 +1,11 @@
-"use strict";
+'use strict';
 
-import React, { Component } from "react";
-import SingleMarker from "./SingleMarker";
+import React, { Component } from 'react';
+import SingleMarker from './SingleMarker';
 
-import { ViroARScene } from "react-viro";
+import { ViroARScene } from 'react-viro';
 
-require("../secret");
+require('../secret');
 
 const AR = props => {
   const {
@@ -13,9 +13,10 @@ const AR = props => {
     lat,
     long,
     color,
-    icon
+    icon,
+    addReview,
   } = props.sceneNavigator.viroAppProps;
-
+  console.log(businesses);
   return (
     <ViroARScene style={{ flex: 1 }}>
       {businesses.length
@@ -31,6 +32,7 @@ const AR = props => {
                 busLong={business.location.lng}
                 color={color}
                 icon={icon}
+                addReview={addReview}
                 // busLat={40.759355}
                 // busLong={-73.911742}
               />
