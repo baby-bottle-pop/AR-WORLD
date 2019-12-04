@@ -3,7 +3,7 @@ import axios from "axios";
 const GOT_USER = "GET_USER";
 const NEW_USER = "NEW_USER";
 
-const newUser = user => ({type: NEW_USER, user})
+const newUser = user => ({ type: NEW_USER, user });
 
 const gotUser = user => {
   return {
@@ -18,7 +18,7 @@ const initialState = {
 
 export const loginThunk = (email, password) => async dispatch => {
   try {
-    let res = await axios.post(`http://172.16.21.190:8080/auth/login`, {
+    let res = await axios.post(`http://172.16.23.191:8080/auth/login`, {
       //put your comp ip address
       email,
       password
@@ -30,22 +30,26 @@ export const loginThunk = (email, password) => async dispatch => {
   }
 };
 
-export const signUpThunk = (email, password, firstName, lastName) => async dispatch => {
+export const signUpThunk = (
+  email,
+  password,
+  firstName,
+  lastName
+) => async dispatch => {
   try {
-    let res = await axios.post(`http://172.16.21.190:8080/api/user/signup`, {
+    let res = await axios.post(`http://172.16.23.191:8080/api/user/signup`, {
       //put your comp ip address
       email,
       password,
       firstName,
       lastName
     });
-    let newUser = {email, password}
+    let newUser = { email, password };
     dispatch(gotUser(newUser));
   } catch (error) {
     return dispatch(gotUser({ error }));
   }
 };
-
 
 const userReducer = (state = initialState, action) => {
   switch (action.type) {

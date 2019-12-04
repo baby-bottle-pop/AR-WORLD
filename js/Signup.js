@@ -15,22 +15,21 @@ class Signup extends Component {
   }
   render() {
     return this.props.isLoggedIn ? (
-        <View style={styles.input}>
-          <Button
-            style={styles.button}
-            color="black"
-            title="Enter world"
-            onPress={this.props.ARNavigator}
-          />
-        </View>
-      ):
-      ( 
+      <View style={styles.input}>
+        <Button
+          style={styles.button}
+          color="black"
+          title="Enter world"
+          onPress={this.props.ARNavigator}
+        />
+      </View>
+    ) : (
       <View style={styles.input}>
         <TextInput
           style={styles.username}
           placeholder="Email"
           placeholderTextColor="black"
-          defaultValue="test@email.com"
+          defaultValue="test2@gmail.com"
           onChangeText={text => this.setState({ email: text })}
         />
         <TextInput
@@ -59,7 +58,12 @@ class Signup extends Component {
           color="black"
           title="Signup"
           onPress={() =>
-            this.props.signup(this.state.email, this.state.password, this.state.firstName, this.state.lastName)
+            this.props.signup(
+              this.state.email,
+              this.state.password,
+              this.state.firstName,
+              this.state.lastName
+            )
           }
         />
       </View>
@@ -108,8 +112,9 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  signup: (email, password, firstName, lastName) => dispatch(signUpThunk(email, password, firstName, lastName)),
-  login: (email, password) => dispatch(loginThunk(email, password)),
+  signup: (email, password, firstName, lastName) =>
+    dispatch(signUpThunk(email, password, firstName, lastName)),
+  login: (email, password) => dispatch(loginThunk(email, password))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Signup);
