@@ -18,11 +18,14 @@ const initialState = {
 
 export const loginThunk = (email, password) => async dispatch => {
   try {
-    let res = await axios.post(`http://172.16.23.191:8080/auth/login`, {
-      //put your comp ip address
-      email,
-      password
-    });
+    let res = await axios.post(
+      `https://ar-server-v2.herokuapp.com/auth/login`,
+      {
+        //put your comp ip address
+        email,
+        password
+      }
+    );
 
     dispatch(gotUser(res.data));
   } catch (error) {
@@ -37,13 +40,16 @@ export const signUpThunk = (
   lastName
 ) => async dispatch => {
   try {
-    let res = await axios.post(`http://172.16.23.191:8080/api/user/signup`, {
-      //put your comp ip address
-      email,
-      password,
-      firstName,
-      lastName
-    });
+    let res = await axios.post(
+      `https://ar-server-v2.herokuapp.com/auth/signup`,
+      {
+        //put your comp ip address
+        email,
+        password,
+        firstName,
+        lastName
+      }
+    );
     let newUser = { email, password };
     dispatch(gotUser(newUser));
   } catch (error) {

@@ -17,7 +17,9 @@ const initialState = {
 
 export const allReviewsThunk = () => async dispatch => {
   try {
-    const { data } = await axios.get("http://172.16.23.191:8080/api/reviews/");
+    const { data } = await axios.get(
+      "https://ar-server-v2.herokuapp.com/api/reviews/"
+    );
     dispatch(allReviews(data));
   } catch (error) {
     console.log(error);
@@ -27,7 +29,9 @@ export const allReviewsThunk = () => async dispatch => {
 // put your computer's ip into here
 export const getReviewsThunk = id => async dispatch => {
   try {
-    const { data } = await axios.get(`/api/reviews/${id}`);
+    const { data } = await axios.get(
+      `https://ar-server-v2.herokuapp.com/api/reviews/${id}`
+    );
     dispatch(gotReviews(data));
   } catch (error) {
     console.log(error);
@@ -38,7 +42,7 @@ export const addReviewThunk = (id, content, ratings) => async dispatch => {
   try {
     ratings = +ratings;
     const { data } = await axios.post(
-      `http://172.16.23.191:8080/api/reviews/${id}`,
+      `https://ar-server-v2.herokuapp.com/api/reviews/${id}`,
       {
         content,
         ratings
