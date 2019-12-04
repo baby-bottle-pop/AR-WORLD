@@ -30,7 +30,7 @@ class Signup extends Component {
           style={styles.username}
           placeholder="Email"
           placeholderTextColor="black"
-          defaultValue="test@email.com"
+          defaultValue="test@gmail.com"
           onChangeText={text => this.setState({ email: text })}
         />
         <TextInput

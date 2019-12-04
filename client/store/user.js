@@ -41,7 +41,7 @@ export const signUpThunk = (
 ) => async dispatch => {
   try {
     let res = await axios.post(
-      `https://ar-server-v2.herokuapp.com/api/user/signup`,
+      `https://ar-server-v2.herokuapp.com/auth/signup`,
       {
         //put your comp ip address
         email,
