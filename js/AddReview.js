@@ -20,22 +20,27 @@ class AddReview extends Component {
           onChangeText={text => this.setState({ content: text })}
           placeholder={'Comment'}
           placeholderTextColor="black"
+          style={styles.box}
         />
         <TextInput
           value={this.state.ratings}
           onChangeText={text => this.setState({ ratings: text })}
           placeholder={'Rating (number btwn 1-5)'}
           placeholderTextColor="black"
+          style={styles.box}
         />
         <Button
           title="SUBMIT"
-          onPress={() =>
+          style={{ marginTop: '10%' }}
+          onPress={() => {
             this.props.addReviewThunk(
               this.props.id,
               this.state.content,
               this.state.ratings
-            )
-          }
+            );
+            this.setState({ content: '', ratings: '' });
+            this.props.removeReviewBox();
+          }}
         />
       </View>
     );
@@ -48,6 +53,15 @@ let styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#ffffff',
+    position: 'absolute',
+    marginTop: 250,
+    width: '100%',
+    marginLeft: 6,
+    height: '30%',
+  },
+  box: {
+    marginTop: '5%',
+    fontSize: 24,
   },
 });
 

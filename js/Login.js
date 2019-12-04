@@ -1,18 +1,18 @@
-import React, { Component } from "react";
-import { View, TextInput, StyleSheet, Button } from "react-native";
-import { connect } from "react-redux";
-import { loginThunk, signUpThunk } from "../client/store/user";
+import React, { Component } from 'react';
+import { View, TextInput, StyleSheet, Button } from 'react-native';
+import { connect } from 'react-redux';
+import { loginThunk, signUpThunk } from '../client/store/user';
 
 class Login extends Component {
   constructor(props) {
     super();
     this.state = {
-      email: "",
-      password: ""
+      email: '',
+      password: '',
     };
   }
   render() {
-    console.log(this.props)
+    console.log(this.props);
     return this.props.isLoggedIn ? (
       <View style={styles.input}>
         <Button
@@ -58,25 +58,25 @@ class Login extends Component {
 let styles = StyleSheet.create({
   input: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#4F6D7A"
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#AED6F1',
   },
   username: {
-    marginTop: "10%",
-    width: "50%",
-    height: "2%",
-    backgroundColor: "white"
+    marginTop: '10%',
+    width: '50%',
+    height: '2%',
+    backgroundColor: 'white',
   },
   password: {
-    marginTop: "10%",
-    width: "50%",
-    height: "2%",
-    backgroundColor: "white"
+    marginTop: '10%',
+    width: '50%',
+    height: '2%',
+    backgroundColor: 'white',
   },
   button: {
-    marginTop: "10%"
-  }
+    marginTop: '10%',
+  },
 });
 
 const mapStateToProps = state => {
