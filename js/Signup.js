@@ -1,16 +1,16 @@
-import React, { Component } from "react";
-import { View, TextInput, StyleSheet, Button } from "react-native";
-import { connect } from "react-redux";
-import { loginThunk, signUpThunk } from "../client/store/user";
+import React, { Component } from 'react';
+import { View, TextInput, StyleSheet, Button } from 'react-native';
+import { connect } from 'react-redux';
+import { loginThunk, signUpThunk } from '../client/store/user';
 
 class Signup extends Component {
   constructor(props) {
     super();
     this.state = {
-      email: "",
-      password: "",
-      firstName: "",
-      lastName: ""
+      email: '',
+      password: '',
+      firstName: '',
+      lastName: '',
     };
   }
   render() {
@@ -56,7 +56,7 @@ class Signup extends Component {
         <Button
           style={styles.button}
           color="black"
-          title="Signup"
+          title="Sign Up"
           onPress={() =>
             this.props.signup(
               this.state.email,
@@ -66,6 +66,12 @@ class Signup extends Component {
             )
           }
         />
+        <Button
+          style={styles.button}
+          color="black"
+          title="Back to Login"
+          onPress={() => this.props.loginNavigator()}
+        />
       </View>
     );
   }
@@ -74,37 +80,37 @@ class Signup extends Component {
 let styles = StyleSheet.create({
   input: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#4F6D7A"
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#AED6F1',
   },
   username: {
-    marginTop: "10%",
-    width: "50%",
-    height: "2%",
-    backgroundColor: "white"
+    marginTop: '10%',
+    width: '50%',
+    height: '2%',
+    backgroundColor: 'white',
   },
   password: {
-    marginTop: "10%",
-    width: "50%",
-    height: "2%",
-    backgroundColor: "white"
+    marginTop: '10%',
+    width: '50%',
+    height: '2%',
+    backgroundColor: 'white',
   },
   firstName: {
-    marginTop: "10%",
-    width: "50%",
-    height: "2%",
-    backgroundColor: "white"
+    marginTop: '10%',
+    width: '50%',
+    height: '2%',
+    backgroundColor: 'white',
   },
   lastName: {
-    marginTop: "10%",
-    width: "50%",
-    height: "2%",
-    backgroundColor: "white"
+    marginTop: '10%',
+    width: '50%',
+    height: '2%',
+    backgroundColor: 'white',
   },
   button: {
-    marginTop: "10%"
-  }
+    marginTop: '10%',
+  },
 });
 
 const mapStateToProps = state => {
@@ -114,7 +120,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
   signup: (email, password, firstName, lastName) =>
     dispatch(signUpThunk(email, password, firstName, lastName)),
-  login: (email, password) => dispatch(loginThunk(email, password))
+  login: (email, password) => dispatch(loginThunk(email, password)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Signup);

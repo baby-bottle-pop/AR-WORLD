@@ -1,16 +1,16 @@
-import React, { Component } from "react";
-import { Provider } from "react-redux";
-import store from "./client/store";
+import React, { Component } from 'react';
+import { Provider } from 'react-redux';
+import store from './client/store';
 
-import Login from "./js/Login";
-import Signup from "./js/Signup"
-import ARWorld from "./js/ARWorld";
-import Splash from "./js/Splash";
+import Login from './js/Login';
+import Signup from './js/Signup';
+import ARWorld from './js/ARWorld';
+import Splash from './js/Splash';
 
-let SPLASH = "SPLASH";
-let AR = "AR";
-let LOGIN = "LOGIN";
-let SIGNUP = "SIGNUP";
+let SPLASH = 'SPLASH';
+let AR = 'AR';
+let LOGIN = 'LOGIN';
+let SIGNUP = 'SIGNUP';
 // let GUEST = "GUEST";
 console.disableYellowBox = true;
 
@@ -19,7 +19,7 @@ export default class App extends Component {
     super();
     this.state = {
       // navigatorType: "SPLASH"
-      navigatorType: "SPLASH"
+      navigatorType: 'SPLASH',
     };
     this.LoginNavigator = this.LoginNavigator.bind(this);
     this.SignUpNavigator = this.SignUpNavigator.bind(this);
@@ -31,11 +31,16 @@ export default class App extends Component {
         {this.state.navigatorType === SPLASH ? (
           <Splash loginNavigator={this.LoginNavigator} />
         ) : this.state.navigatorType === LOGIN ? (
-          <Login ARNavigator={this.ARNavigator} SignUpNavigator={this.SignUpNavigator} />
-        ) : this.state.navigatorType === SIGNUP? (
-          <Signup ARNavigator={this.ARNavigator}/>
-        ) : 
-        (
+          <Login
+            ARNavigator={this.ARNavigator}
+            SignUpNavigator={this.SignUpNavigator}
+          />
+        ) : this.state.navigatorType === SIGNUP ? (
+          <Signup
+            ARNavigator={this.ARNavigator}
+            loginNavigator={this.LoginNavigator}
+          />
+        ) : (
           <ARWorld />
         )}
       </Provider>
@@ -45,7 +50,7 @@ export default class App extends Component {
     this.setState({ navigatorType: LOGIN });
   }
   SignUpNavigator() {
-    this.setState({ navigatorType: SIGNUP })
+    this.setState({ navigatorType: SIGNUP });
   }
   ARNavigator() {
     this.setState({ navigatorType: AR });

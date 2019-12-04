@@ -1,26 +1,27 @@
-import React, { Component } from "react";
-import { View, TouchableOpacity, Image, StyleSheet } from "react-native";
-import { ViroARSceneNavigator } from "react-viro";
-import { gettingAllThunk, allBusinessThunk } from "../client/store/business";
-import AddReview from "./AddReview";
-import { connect } from "react-redux";
-import Map from "./Map";
+import React, { Component } from 'react';
+import { View, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { ViroARSceneNavigator } from 'react-viro';
+import { gettingAllThunk, allBusinessThunk } from '../client/store/business';
+import AddReview from './AddReview';
+import { connect } from 'react-redux';
+import Map from './Map';
 
-let InitialARScene = require("./AllMarkers");
+let InitialARScene = require('./AllMarkers');
 class disARWorld extends Component {
   constructor(props) {
     super();
     this.state = {
       lat: 0,
       long: 0,
-      clicked: true,
-      map: false
+      clicked: false,
+      map: false,
     };
     this.geo_success = this.geo_success.bind(this);
     this.getLocation = this.getLocation.bind(this);
     this.catchError = this.catchError.bind(this);
     this.addReview = this.addReview.bind(this);
     this.mapCall = this.mapCall.bind(this);
+    this.removeReviewBox = this.removeReviewBox.bind(this);
   }
   componentDidMount() {
     this.getLocation();
@@ -42,17 +43,17 @@ class disARWorld extends Component {
   async geo_success(position) {
     await this.setState({
       lat: position.coords.latitude,
-      long: position.coords.longitude
+      long: position.coords.longitude,
     });
     this.props.allBusinessThunk(
       this.state.lat,
       this.state.long,
-      "#6b8e23",
-      "/res/city.png"
+      '#6b8e23',
+      '/res/city.png'
     );
   }
   catchError() {
-    console.log("error");
+    console.log('error');
   }
 
   render() {
@@ -65,7 +66,7 @@ class disARWorld extends Component {
               style={{ flex: 0.65 }}
               {...this.state.sharedProps}
               initialScene={{
-                scene: InitialARScene
+                scene: InitialARScene,
               }}
               viroAppProps={{
                 businesses: this.props.businesses,
@@ -74,7 +75,8 @@ class disARWorld extends Component {
                 color: this.props.color,
                 icon: this.props.icon,
                 addReview: this.addReview,
-                mapCall: this.mapCall
+                mapCall: this.mapCall,
+                removeReviewBox: this.removeReviewBox,
               }}
               worldAlignment="GravityAndHeading"
             />
@@ -85,7 +87,7 @@ class disARWorld extends Component {
             style={{ flex: 0.7 }}
             {...this.state.sharedProps}
             initialScene={{
-              scene: InitialARScene
+              scene: InitialARScene,
             }}
             viroAppProps={{
               businesses: this.props.businesses,
@@ -94,18 +96,19 @@ class disARWorld extends Component {
               color: this.props.color,
               icon: this.props.icon,
               addReview: this.addReview,
-              mapCall: this.mapCall
+              mapCall: this.mapCall,
             }}
             worldAlignment="GravityAndHeading"
           />
         )}
 
-        <View style={{ position: "absolute" }}>
+        <View style={{ position: 'absolute' }}>
           <View
             style={{
               flex: 0.9,
-              flexDirection: "row-reverse",
-              justifyContent: "space-around"
+              marginBottom: 650,
+              flexDirection: 'row-reverse',
+              justifyContent: 'space-around',
             }}
           >
             <TouchableOpacity
@@ -114,20 +117,20 @@ class disARWorld extends Component {
                 this.props.allBusinessThunk(
                   this.state.lat,
                   this.state.long,
-                  "#6b8e23",
-                  "/res/city.png"
+                  '#6b8e23',
+                  '/res/city.png'
                 );
               }}
             >
               <Image
-                source={require("./res/city.png")}
+                source={require('./res/city.png')}
                 style={{
-                  alignItems: "center",
+                  alignItems: 'center',
                   padding: 20,
                   marginEnd: 10,
                   height: 10,
                   width: 10,
-                  tintColor: "#6b8e23"
+                  tintColor: '#6b8e23',
                 }}
               />
             </TouchableOpacity>
@@ -137,21 +140,21 @@ class disARWorld extends Component {
                 this.props.gettingAllThunk(
                   this.state.lat,
                   this.state.long,
-                  "bars",
-                  "#dda0dd",
-                  "/res/baricon.png"
+                  'bars',
+                  '#dda0dd',
+                  '/res/baricon.png'
                 );
               }}
             >
               <Image
-                source={require("./res/baricon.png")}
+                source={require('./res/baricon.png')}
                 style={{
-                  alignItems: "center",
+                  alignItems: 'center',
                   padding: 20,
                   marginEnd: 10,
                   height: 10,
                   width: 10,
-                  tintColor: "#dda0dd"
+                  tintColor: '#dda0dd',
                 }}
               />
             </TouchableOpacity>
@@ -161,21 +164,21 @@ class disARWorld extends Component {
                 this.props.gettingAllThunk(
                   this.state.lat,
                   this.state.long,
-                  "activity",
-                  "#ff69b4",
-                  "/res/entertainment-icon-png-14.jpg"
+                  'activity',
+                  '#ff69b4',
+                  '/res/entertainment-icon-png-14.jpg'
                 );
               }}
             >
               <Image
-                source={require("./res/entertainment-icon-png-14.jpg")}
+                source={require('./res/entertainment-icon-png-14.jpg')}
                 style={{
-                  alignItems: "center",
+                  alignItems: 'center',
                   padding: 20,
                   marginEnd: 10,
                   height: 10,
                   width: 10,
-                  tintColor: "#ff69b4"
+                  tintColor: '#ff69b4',
                 }}
               />
             </TouchableOpacity>
@@ -185,26 +188,28 @@ class disARWorld extends Component {
                 this.props.gettingAllThunk(
                   this.state.lat,
                   this.state.long,
-                  "food",
-                  "#1e90ff",
-                  "/res/food.png"
+                  'food',
+                  '#1e90ff',
+                  '/res/food.png'
                 );
               }}
             >
               <Image
-                source={require("./res/food.png")}
+                source={require('./res/food.png')}
                 style={{
-                  alignItems: "center",
+                  alignItems: 'center',
                   padding: 20,
                   marginEnd: 10,
                   height: 10,
                   width: 10,
-                  tintColor: "#1e90ff"
+                  tintColor: '#1e90ff',
                 }}
               />
             </TouchableOpacity>
           </View>
-          {this.state.clicked ? <AddReview /> : null}
+          {this.state.clicked ? (
+            <AddReview removeReviewBox={this.removeReviewBox} />
+          ) : null}
         </View>
       </View>
     );
@@ -212,6 +217,10 @@ class disARWorld extends Component {
 
   addReview() {
     this.setState({ clicked: true });
+  }
+
+  removeReviewBox() {
+    this.setState({ clicked: false });
   }
 
   mapCall() {
@@ -222,40 +231,40 @@ class disARWorld extends Component {
 let localStyles = StyleSheet.create({
   viroContainer: {
     flex: 1,
-    backgroundColor: "black"
+    backgroundColor: 'black',
   },
   ar: {
-    flex: 1
+    flex: 1,
   },
   outer: {
     flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "black"
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'black',
   },
   inner: {
     flex: 1,
-    flexDirection: "column",
-    alignItems: "center",
-    backgroundColor: "black"
+    flexDirection: 'column',
+    alignItems: 'center',
+    backgroundColor: 'black',
   },
   imageIcon: {
     flex: 1,
     width: 50,
     height: 50,
-    resizeMode: "contain"
+    resizeMode: 'contain',
   },
   titleText: {
     paddingTop: 30,
     paddingBottom: 20,
-    color: "#fff",
-    textAlign: "center",
-    fontSize: 25
+    color: '#fff',
+    textAlign: 'center',
+    fontSize: 25,
   },
   buttonText: {
-    color: "#fff",
-    textAlign: "center",
-    fontSize: 20
+    color: '#fff',
+    textAlign: 'center',
+    fontSize: 20,
   },
   buttons: {
     height: 80,
@@ -264,16 +273,16 @@ let localStyles = StyleSheet.create({
     paddingBottom: 20,
     marginTop: 10,
     marginBottom: 10,
-    backgroundColor: "#68a0cf",
+    backgroundColor: '#68a0cf',
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: "#fff"
+    borderColor: '#fff',
   },
   buttonTwo: {
-    alignItems: "center",
+    alignItems: 'center',
     padding: 20,
     marginEnd: 10,
-    justifyContent: "space-between"
+    justifyContent: 'space-between',
   },
   exitButton: {
     height: 50,
@@ -282,17 +291,17 @@ let localStyles = StyleSheet.create({
     paddingBottom: 10,
     marginTop: 10,
     marginBottom: 10,
-    backgroundColor: "#68a0cf",
+    backgroundColor: '#68a0cf',
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: "#fff"
-  }
+    borderColor: '#fff',
+  },
 });
 
 const mapStateToProps = state => ({
   businesses: state.businessReducer.business,
   color: state.businessReducer.color,
-  icon: state.businessReducer.icon
+  icon: state.businessReducer.icon,
 });
 
 const mapDispatchToProps = dispatch => {
@@ -300,7 +309,7 @@ const mapDispatchToProps = dispatch => {
     gettingAllThunk: (lat, long, category, color, icon) =>
       dispatch(gettingAllThunk(lat, long, category, color, icon)),
     allBusinessThunk: (lat, long, color, icon) =>
-      dispatch(allBusinessThunk(lat, long, color, icon))
+      dispatch(allBusinessThunk(lat, long, color, icon)),
   };
 };
 
