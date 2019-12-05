@@ -13,7 +13,7 @@ class disARWorld extends Component {
     this.state = {
       lat: 0,
       long: 0,
-      clicked: false,
+      clicked: true,
       map: false
     };
     this.geo_success = this.geo_success.bind(this);
@@ -106,7 +106,7 @@ class disARWorld extends Component {
           <View
             style={{
               flex: 0.9,
-              // marginBottom: 650,
+              bottom: 260,
               flexDirection: "row-reverse",
               justifyContent: "space-around"
             }}
@@ -207,10 +207,10 @@ class disARWorld extends Component {
               />
             </TouchableOpacity>
           </View>
-          {this.state.clicked ? (
-            <AddReview removeReviewBox={this.removeReviewBox} />
-          ) : null}
         </View>
+        {this.state.clicked ? (
+          <AddReview removeReviewBox={this.removeReviewBox} />
+        ) : null}
       </View>
     );
   }

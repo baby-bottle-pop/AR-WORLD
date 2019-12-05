@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { StyleSheet } from 'react-native';
-import { ViroFlexView, ViroText } from 'react-viro';
-import { allReviewsThunk } from '../client/store/reviews';
-import { connect } from 'react-redux';
+import React, { Component } from "react";
+import { StyleSheet } from "react-native";
+import { ViroFlexView, ViroText } from "react-viro";
+import { getReviewsThunk } from "../client/store/reviews";
+import { connect } from "react-redux";
 
 class Reviews extends Component {
   constructor(props) {
@@ -10,7 +10,7 @@ class Reviews extends Component {
   }
 
   componentDidMount() {
-    this.props.allReviewsThunk();
+    this.props.getReviewsThunk(this.props.id);
   }
 
   render() {
@@ -25,29 +25,29 @@ class Reviews extends Component {
 }
 const mapStateToProps = state => ({
   reviews: state.reviewReducer.reviews,
-  businesses: state.businessReducer.business,
+  businesses: state.businessReducer.business
 });
 const mapDispatchToProps = dispatch => ({
-  allReviewsThunk: () => dispatch(allReviewsThunk()),
+  getReviewsThunk: id => dispatch(getReviewsThunk(id))
 });
 
 const styles = StyleSheet.create({
   subHeadings: {
     fontSize: 30,
-    textAlign: 'center',
-    fontWeight: 'bold',
-    fontFamily: 'Cochin',
-    color: '#b22222',
+    textAlign: "center",
+    fontWeight: "bold",
+    fontFamily: "Cochin",
+    color: "#b22222"
   },
   info: {
     fontSize: 20,
-    fontWeight: 'bold',
-    fontFamily: 'Cochin',
-    alignItems: 'flex-start',
-    color: '#0000cd',
-    textAlign: 'center',
-    marginTop: '2%',
-  },
+    fontWeight: "bold",
+    fontFamily: "Cochin",
+    alignItems: "flex-start",
+    color: "#0000cd",
+    textAlign: "center",
+    marginTop: "2%"
+  }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Reviews);
