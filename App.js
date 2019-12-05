@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
-import { Provider } from 'react-redux';
-import store from './client/store';
+import React, { Component } from "react";
+import { Provider } from "react-redux";
+import store from "./client/store";
 
-import Login from './js/Login';
-import Signup from './js/Signup';
-import ARWorld from './js/ARWorld';
-import Splash from './js/Splash';
+import Login from "./js/Login";
+import Signup from "./js/Signup";
+import ARWorld from "./js/ARWorld";
+import Splash from "./js/Splash";
 
-let SPLASH = 'SPLASH';
-let AR = 'AR';
-let LOGIN = 'LOGIN';
-let SIGNUP = 'SIGNUP';
+let SPLASH = "SPLASH";
+let AR = "AR";
+let LOGIN = "LOGIN";
+let SIGNUP = "SIGNUP";
 // let GUEST = "GUEST";
 console.disableYellowBox = true;
 
@@ -19,7 +19,7 @@ export default class App extends Component {
     super();
     this.state = {
       // navigatorType: "SPLASH"
-      navigatorType: 'SPLASH',
+      navigatorType: "AR"
     };
     this.LoginNavigator = this.LoginNavigator.bind(this);
     this.SignUpNavigator = this.SignUpNavigator.bind(this);

@@ -11,8 +11,7 @@ const gotReviews = reviews => ({ type: GOT_REVIEWS, reviews });
 const addReview = review => ({ type: ADD_REVIEW, review });
 
 const initialState = {
-  reviews: [],
-  review: {}
+  reviews: []
 };
 
 export const allReviewsThunk = () => async dispatch => {
@@ -59,7 +58,7 @@ export default function reviewReducer(state = initialState, action) {
     case GOT_REVIEWS:
       return { ...state, reviews: action.reviews };
     case ADD_REVIEW:
-      return { ...state, review: action.review };
+      return { ...state, reviews: [...state.reviews, action.review] };
     default:
       return state;
   }
