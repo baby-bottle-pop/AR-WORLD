@@ -3,9 +3,6 @@
 import React, { Component } from "react";
 import SingleMarker from "./SingleMarker";
 
-<<<<<<< HEAD
-import { ViroARScene } from "react-viro";
-=======
 import {
   ViroARScene,
   ViroARImageMarker,
@@ -13,7 +10,6 @@ import {
   ViroAnimatedImage,
   ViroARPlaneSelector
 } from "react-viro";
->>>>>>> master
 
 require("../secret");
 
@@ -32,28 +28,35 @@ const AR = props => {
     <ViroARScene style={{ flex: 1 }}>
       <ViroARImageMarker target={"targetOne"}>
         <ViroAnimatedImage
-          height={0.7}
-          width={0.7}
+          height={0.4}
+          width={0.4}
           transformBehaviors={"billboard"}
           source={{
             uri: "https://media.giphy.com/media/JSoz56zJrygUNUSi20/giphy.gif"
           }}
         />
       </ViroARImageMarker>
-      <ViroARPlaneSelector
-        alignment={"HorizontalUpward"}
-        dragType={"FixedDistance"}
-      >
+      <ViroARImageMarker target={"targetTwo"}>
         <ViroAnimatedImage
-          opacity={0.1}
-          minWidth={0.5}
-          minHeight={0.5}
+          height={0.4}
+          width={0.4}
           transformBehaviors={"billboard"}
           source={{
-            uri: "https://media.giphy.com/media/Q99A6dXgEr3shEYNi3/giphy.gif"
+            uri: "https://media.giphy.com/media/TIiyIEh2FUN7aTESJJ/giphy.gif"
           }}
         />
-      </ViroARPlaneSelector>
+      </ViroARImageMarker>
+      <ViroARImageMarker target={"targetThree"}>
+        <ViroAnimatedImage
+          height={0.4}
+          width={0.4}
+          transformBehaviors={"billboard"}
+          source={{
+            uri: "https://media.giphy.com/media/QpWDP1YMziaQw/giphy.gif"
+          }}
+        />
+      </ViroARImageMarker>
+
       {businesses.length
         ? businesses.map(business => {
             return (
@@ -82,7 +85,17 @@ ViroARTrackingTargets.createTargets({
   targetOne: {
     source: require("./res/stop.png"),
     orientation: "Up",
-    physicalWidth: 0.165 // real world width in meters
+    physicalWidth: 0.165
+  },
+  targetTwo: {
+    source: require("./res/one-way.png"),
+    orientation: "Up",
+    physicalWidth: 0.165
+  },
+  targetThree: {
+    source: require("./res/walking.png"),
+    orientation: "Up",
+    physicalWidth: 0.165
   }
 });
 
