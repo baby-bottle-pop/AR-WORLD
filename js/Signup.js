@@ -1,116 +1,193 @@
-import React, { Component } from 'react';
-import { View, TextInput, StyleSheet, Button } from 'react-native';
-import { connect } from 'react-redux';
-import { loginThunk, signUpThunk } from '../client/store/user';
+import React, { Component } from "react";
+import {
+  View,
+  TextInput,
+  StyleSheet,
+  Button,
+  Text,
+  TouchableOpacity
+} from "react-native";
+import { connect } from "react-redux";
+import { loginThunk, signUpThunk } from "../client/store/user";
 
 class Signup extends Component {
   constructor(props) {
     super();
     this.state = {
-      email: '',
-      password: '',
-      firstName: '',
-      lastName: '',
+      email: "",
+      password: "",
+      firstName: "",
+      lastName: ""
     };
   }
+
   render() {
     return this.props.isLoggedIn ? (
-      <View style={styles.input}>
-        <Button
-          style={styles.button}
-          color="black"
-          title="Enter world"
-          onPress={this.props.ARNavigator}
-        />
+      <View style={styles.enter}>
+        <TouchableOpacity onPress={this.props.ARNavigator}>
+          <View style={styles.button}>
+            <Text style={styles.buttonText}>ENTER WORLD</Text>
+          </View>
+        </TouchableOpacity>
       </View>
     ) : (
-      <View style={styles.input}>
-        <TextInput
-          style={styles.username}
-          placeholder="Email"
-          placeholderTextColor="black"
-          defaultValue="test@gmail.com"
-          onChangeText={text => this.setState({ email: text })}
-        />
-        <TextInput
-          style={styles.password}
-          placeholder="Password"
-          placeholderTextColor="black"
-          defaultValue="123"
-          onChangeText={text => this.setState({ password: text })}
-        />
-        <TextInput
-          style={styles.firstName}
-          placeholder="First Name"
-          placeholderTextColor="black"
-          defaultValue="Phurb"
-          onChangeText={text => this.setState({ firstName: text })}
-        />
-        <TextInput
-          style={styles.lastName}
-          placeholder="Last Name"
-          placeholderTextColor="black"
-          defaultValue="Park"
-          onChangeText={text => this.setState({ lastName: text })}
-        />
-        <Button
-          style={styles.button}
-          color="black"
-          title="Sign Up"
-          onPress={() =>
-            this.props.signup(
-              this.state.email,
-              this.state.password,
-              this.state.firstName,
-              this.state.lastName
-            )
-          }
-        />
-        <Button
-          style={styles.button}
-          color="black"
-          title="Back to Login"
-          onPress={() => this.props.loginNavigator()}
-        />
+      <View style={styles.signup}>
+        <View style={styles.container}>
+          <Text style={styles.welcome}>{`WELCOME TO\n AR World`}</Text>
+          <View style={{ height: 30 }} />
+          <View style={styles.firstContainer}>
+            <TextInput
+              style={styles.textInput}
+              placeholder="First Name"
+              placeholderTextColor="#989899"
+              onChangeText={text => this.setState({ firstName: text })}
+              keyboardType="email-address"
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.textInput}
+              placeholder="Last Name"
+              placeholderTextColor="#989899"
+              onChangeText={text => this.setState({ lastName: text })}
+              keyboardType="email-address"
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.textInput}
+              placeholder="Email"
+              placeholderTextColor="#989899"
+              onChangeText={text => this.setState({ email: text })}
+              keyboardType="email-address"
+            />
+          </View>
+          <View style={styles.passwordContainer}>
+            <TextInput
+              style={styles.textInput}
+              onChangeText={text => this.setState({ password: text })}
+              placeholder="Password"
+              placeholderTextColor="#989899"
+              secureTextEntry={true}
+            />
+          </View>
+          <TouchableOpacity
+            onPress={() =>
+              this.props.signup(
+                this.state.email,
+                this.state.password,
+                this.state.firstName,
+                this.state.lastName
+              )
+            }
+          >
+            <View style={styles.button}>
+              <Text style={styles.buttonText}>SIGN UP</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.goback}>
+          <TouchableOpacity onPress={this.props.loginNavigator}>
+            <View style={{ height: 25 }}>
+              <Text style={styles.backText}>Back to Login</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
 }
 
-let styles = StyleSheet.create({
-  input: {
+const styles = StyleSheet.create({
+  enter: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#AED6F1',
+    justifyContent: "center",
+    alignItems: "center"
   },
-  username: {
-    marginTop: '10%',
-    width: '50%',
-    height: '2%',
-    backgroundColor: 'white',
+  signup: {
+    flex: 1
   },
-  password: {
-    marginTop: '10%',
-    width: '50%',
-    height: '2%',
-    backgroundColor: 'white',
+  container: {
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1,
+    paddingTop: 50
   },
-  firstName: {
-    marginTop: '10%',
-    width: '50%',
-    height: '2%',
-    backgroundColor: 'white',
+  welcome: {
+    fontSize: 30,
+    color: "#5B5A5A",
+    textAlign: "center",
+    letterSpacing: 5
   },
-  lastName: {
-    marginTop: '10%',
-    width: '50%',
-    height: '2%',
-    backgroundColor: 'white',
+  firstContainer: {
+    width: 325,
+    borderColor: "#CFD0D1",
+    borderWidth: 1,
+    height: 50,
+    padding: 10,
+    borderBottomWidth: 0,
+    borderTopLeftRadius: 4,
+    borderTopRightRadius: 4,
+    backgroundColor: "#F5F6F7"
+  },
+  inputContainer: {
+    width: 325,
+    borderColor: "#CFD0D1",
+    borderWidth: 1,
+    height: 50,
+    padding: 10,
+    borderBottomWidth: 0,
+    backgroundColor: "#F5F6F7"
+  },
+  passwordContainer: {
+    width: 325,
+    borderColor: "#CFD0D1",
+    borderWidth: 1,
+    height: 50,
+    padding: 10,
+    borderBottomLeftRadius: 4,
+    borderBottomRightRadius: 4,
+    backgroundColor: "#F5F6F7"
+  },
+  textInput: {
+    color: "black",
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    fontSize: 14
   },
   button: {
-    marginTop: '10%',
+    width: 325,
+    borderColor: "#129793",
+    borderWidth: 1,
+    height: 50,
+    padding: 10,
+    borderRadius: 24,
+    marginTop: 40,
+    backgroundColor: "#129793",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center"
   },
+  buttonText: {
+    color: "white",
+    fontSize: 16
+  },
+  goback: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: "40%",
+    color: "black"
+  },
+  backText: {
+    color: "black",
+    fontSize: 14,
+    alignItems: "center",
+    textAlign: "center",
+    width: 330
+  }
 });
 
 const mapStateToProps = state => {
@@ -120,7 +197,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
   signup: (email, password, firstName, lastName) =>
     dispatch(signUpThunk(email, password, firstName, lastName)),
-  login: (email, password) => dispatch(loginThunk(email, password)),
+  login: (email, password) => dispatch(loginThunk(email, password))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Signup);

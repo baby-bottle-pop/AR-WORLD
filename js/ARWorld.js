@@ -13,7 +13,7 @@ class disARWorld extends Component {
     this.state = {
       lat: 0,
       long: 0,
-      clicked: true,
+      clicked: false,
       map: false
     };
     this.geo_success = this.geo_success.bind(this);
@@ -106,7 +106,8 @@ class disARWorld extends Component {
           <View
             style={{
               flex: 0.9,
-              bottom: 260,
+              bottom: 350,
+              left: 10,
               flexDirection: "row-reverse",
               justifyContent: "space-around"
             }}
