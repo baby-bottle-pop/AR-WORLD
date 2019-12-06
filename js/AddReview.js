@@ -1,11 +1,17 @@
 import React, { Component } from "react";
+import RNPickerSelect from "react-native-picker-select";
 import {
   TextInput,
   StyleSheet,
   View,
   Button,
   Text,
-  Picker
+  KeyboardAvoidingView,
+  TouchableOpacity,
+  Image,
+  Keyboard,
+  TouchableWithoutFeedback,
+  TouchableHighlight
 } from "react-native";
 import { addReviewThunk } from "../client/store/reviews";
 import { connect } from "react-redux";
@@ -21,56 +27,67 @@ class AddReview extends Component {
 
   render() {
     return (
-      <View style={styles.input}>
-        <View style={{ flexDirection: "column" }}>
-          <Text style={{ fontSize: 20 }}>Leave A Comment: </Text>
-          <TextInput
-            multiline={true}
-            value={this.state.content}
-            onChangeText={text => this.setState({ content: text })}
-            maxLength={150}
-            style={styles.box}
-          />
-        </View>
-        {/* <Picker
-          selectedValue={this.state.ratings}
-          onValueChange={(itemValue, itemIndex) =>
-            this.setState({ ratings: itemValue })
-          }
-        >
-          >
-          <Picker.Item label="1" value="1" />
-          <Picker.Item label="2" value="2" />
-          <Picker.Item label="3" value="3" />
-          <Picker.Item label="4" value="4" />
-          <Picker.Item label="5" value="5" />
-        </Picker> */}
-        <View style={{ flexDirection: "column" }}>
-          <Text style={{ fontSize: 20 }}>Give A Rating </Text>
-          <TextInput
-            value={this.state.ratings}
-            onChangeText={text => this.setState({ ratings: text })}
-            style={styles.box}
-          />
-        </View>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <KeyboardAvoidingView style={styles.input} behavior="padding" enabled>
+          <View style={styles.topbox}>
+            <TouchableHighlight onPress={this.props.removeReviewBox}>
+              <Text style={styles.remove}>X</Text>
+            </TouchableHighlight>
+          </View>
+          <Image style={styles.image} source={require("./res/comment.png")} />
+          <View style={styles.comment}>
+            <TextInput
+              placeholder="Leave A Comment..."
+              placeholderTextColor="gray"
+              multiline={true}
+              value={this.state.content}
+              onChangeText={text => this.setState({ content: text })}
+              maxLength={150}
+              style={styles.box}
+            />
+          </View>
+          <View style={styles.ratings}>
+            <Text style={{ fontSize: 20, textAlign: "center" }}>
+              Give A Rating{" "}
+            </Text>
+            <RNPickerSelect
+              placeholder={{
+                label: "Click here to select a Rating",
+                value: null,
+                color: "black",
+                fontSize: 18,
+                textAlign: "center"
+              }}
+              style={styles.picker}
+              onValueChange={value => this.setState({ ratings: value })}
+              placeholderTextColor="black"
+              items={[
+                { label: "1 star", value: "1" },
+                { label: "2 stars", value: "2" },
+                { label: "3 stars", value: "3" },
+                { label: "4 stars", value: "4" },
+                { label: "5 stars", value: "5" }
+              ]}
+            />
+          </View>
 
-        <View style={{ backgroundColor: "#33F9FF" }}>
-          <Button
-            title="SUBMIT"
-            style={{ marginTop: "10%" }}
-            onPress={() => {
-              this.props.addReviewThunk(
-                this.props.id,
-                this.state.content,
-                this.state.ratings
-              );
-              this.setState({ content: "", ratings: "" });
-              this.props.removeReviewBox();
-            }}
-            color="#ffffff"
-          />
-        </View>
-      </View>
+          <TouchableOpacity style={styles.button}>
+            <Button
+              title="SUBMIT"
+              style={{ marginTop: "10%" }}
+              onPress={() => {
+                this.props.addReviewThunk(
+                  this.props.id,
+                  this.state.content,
+                  this.state.ratings
+                );
+                this.setState({ content: "", ratings: "" });
+              }}
+              color="#ffffff"
+            />
+          </TouchableOpacity>
+        </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
     );
   }
 }
@@ -81,17 +98,40 @@ let styles = StyleSheet.create({
     width: "90%",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#ffffff",
-    left: 6
+    backgroundColor: "#E9EEEE",
+    left: 22,
+    height: 350,
+    borderRadius: 25
+  },
+  remove: {
+    fontSize: 24,
+    textAlign: "right",
+    fontWeight: "bold",
+    right: 15
   },
   box: {
-    marginTop: 5,
     fontSize: 18,
-    height: 90,
-    width: 200,
+    height: "100%",
+    width: 300,
     borderColor: "black",
     borderWidth: 1
-  }
+  },
+  topbox: {
+    flex: 0.2,
+    backgroundColor: "#33F9FF",
+    width: "100%",
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+    justifyContent: "center"
+  },
+  image: {
+    flex: 0.25,
+    width: "25%",
+    bottom: 40
+  },
+  comment: { bottom: 33, flex: 0.3, backgroundColor: "#F1F7F7" },
+  ratings: { bottom: 15, flex: 0.2, flexDirection: "column" },
+  button: { bottom: 18, flex: 0.12, backgroundColor: "#33F9FF" }
 });
 
 const mapStateToProps = state => ({

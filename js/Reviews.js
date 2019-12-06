@@ -15,7 +15,7 @@ class Reviews extends Component {
 
   render() {
     return (
-      <ViroFlexView style={{ flex: 0.2 }}>
+      <ViroFlexView style={{ flex: 0.2, backgroundColor: "gray" }}>
         {this.props.reviews.map(review => {
           return <ViroText style={styles.info} text={review.content} />;
         })}
