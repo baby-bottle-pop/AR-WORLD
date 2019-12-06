@@ -1,11 +1,17 @@
-'use strict';
+"use strict";
 
-import React, { Component } from 'react';
-import SingleMarker from './SingleMarker';
+import React, { Component } from "react";
+import SingleMarker from "./SingleMarker";
 
-import { ViroARScene } from 'react-viro';
+import {
+  ViroARScene,
+  ViroARImageMarker,
+  ViroARTrackingTargets,
+  ViroAnimatedImage,
+  ViroARPlaneSelector
+} from "react-viro";
 
-require('../secret');
+require("../secret");
 
 const AR = props => {
   const {
@@ -15,11 +21,35 @@ const AR = props => {
     color,
     icon,
     addReview,
-    mapCall,
+    mapCall
   } = props.sceneNavigator.viroAppProps;
   console.log(businesses);
   return (
     <ViroARScene style={{ flex: 1 }}>
+      <ViroARImageMarker target={"targetOne"}>
+        <ViroAnimatedImage
+          height={0.7}
+          width={0.7}
+          transformBehaviors={"billboard"}
+          source={{
+            uri: "https://media.giphy.com/media/JSoz56zJrygUNUSi20/giphy.gif"
+          }}
+        />
+      </ViroARImageMarker>
+      <ViroARPlaneSelector
+        alignment={"HorizontalUpward"}
+        dragType={"FixedDistance"}
+      >
+        <ViroAnimatedImage
+          opacity={0.1}
+          minWidth={0.5}
+          minHeight={0.5}
+          transformBehaviors={"billboard"}
+          source={{
+            uri: "https://media.giphy.com/media/Q99A6dXgEr3shEYNi3/giphy.gif"
+          }}
+        />
+      </ViroARPlaneSelector>
       {businesses.length
         ? businesses.map(business => {
             return (
@@ -44,6 +74,13 @@ const AR = props => {
     </ViroARScene>
   );
 };
+ViroARTrackingTargets.createTargets({
+  targetOne: {
+    source: require("./res/stop.png"),
+    orientation: "Up",
+    physicalWidth: 0.165 // real world width in meters
+  }
+});
 
 export default AR;
 module.exports = AR;
