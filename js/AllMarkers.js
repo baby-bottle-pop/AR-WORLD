@@ -3,6 +3,9 @@
 import React, { Component } from "react";
 import SingleMarker from "./SingleMarker";
 
+<<<<<<< HEAD
+import { ViroARScene } from "react-viro";
+=======
 import {
   ViroARScene,
   ViroARImageMarker,
@@ -10,6 +13,7 @@ import {
   ViroAnimatedImage,
   ViroARPlaneSelector
 } from "react-viro";
+>>>>>>> master
 
 require("../secret");
 

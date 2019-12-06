@@ -12,7 +12,7 @@ class Details extends Component {
   }
 
   componentDidMount() {
-    this.props.getDetailsThunk(this.props.id);
+    // this.props.getDetailsThunk(this.props.id);
   }
 
   render() {
@@ -41,9 +41,11 @@ class Details extends Component {
       if (venue.description) {
         description = venue.description;
       } else if (venue.page) {
-        description = venue.page.pageInfo.description;
-      } else {
-        description = "No Description Available";
+        if (venue.page.pageInfo) {
+          description = venue.page.pageInfo.description;
+        } else {
+          description = "No Description Available";
+        }
       }
       address = venue.location
         ? venue.location.formattedAddress
@@ -58,7 +60,7 @@ class Details extends Component {
         : "No Reviews Yet";
     } else {
       description =
-        "loremcwemcniqebrvibeqkvnwelvnlnvlnelvnloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvabvcwks";
+        "loremcwemcniqebrvibeqkvnwelvnlnvlnelvnloremcwemcniqebrvibe\nqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcni\nqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvlorem\ncwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnv\nmlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvloremcwemcniqebrvibeqkvnwe\nlvnlnvlnelvloremcwemcniqebrvibeqkvnwelvnlnvlnelvabvcwks";
 
       address = "ASIA";
       rating = 10;
@@ -66,37 +68,30 @@ class Details extends Component {
       hours = "open till 7pm";
       review = "best place ever";
     }
-
-    // console.log("description", this.props.details.page.pageInfo.description);
-    // console.log("location", this.props.details.location); // .lat,.lng, .formattedAddress[0]
-    // console.log("name", this.props.details.name);
-    // console.log("phone", this.props.details.formattedPhone);
-    // console.log("rating", this.props.details.rating);
-    // console.log("hours", this.props.details.hours.timeframes); // is an array timeframes[i].days, and .open[0].renderedTime
-    // console.log("review", this.props.details.tips.groups[0].items[0].text); // a random review
-    // {
-    //   this.props.details.venue
-    //     ? console.log(this.props.details.venue.location)
-    //     : console.log("broken");
-    // }
     return (
       <ViroFlexView
-        backgroundColor="white"
         style={{
-          flex: 0.8,
+          flex: 0.9,
           marginTop: "10%"
         }}
-        opacity={0.85}
       >
-        <ViroFlexView style={{ flex: 0.2 }}>
-          <ViroText style={styles.descriptionReviews} text="Description" />
+        <ViroFlexView
+          style={{
+            flex: 0.3,
+            backgroundColor: "gray",
+            justifyContent: "center"
+          }}
+        >
+          <ViroText style={styles.description} text="Description" />
           <ViroText style={styles.info} text={`${description}`} />
         </ViroFlexView>
         <ViroFlexView
           style={{
-            flex: 0.2,
+            backgroundColor: "#F1F7F7",
+            flex: 0.3,
             flexDirection: "row",
-            marginTop: "10%"
+            marginTop: "3%",
+            opacity: 0.85
           }}
         >
           <ViroFlexView style={{ flex: 0.5, flexDirection: "column" }}>
@@ -120,20 +115,26 @@ class Details extends Component {
             </ViroFlexView>
           </ViroFlexView>
         </ViroFlexView>
-        <ViroFlexView style={{ flex: 0.2 }}>
-          <ViroText style={styles.descriptionReviews} text="Review" />
-          <ViroText style={styles.info} text={`${review}`} />
+        <ViroFlexView
+          style={{ flex: 0.4, backgroundColor: "gray", alignItems: "center" }}
+        >
+          <ViroText style={styles.reviews} text="Review" />
+          <ViroText
+            style={{ flex: 0.2, color: "black", textAlign: "center" }}
+            text={`${review}`}
+          />
+          <ViroImage
+            transformBehaviors={["billboard"]}
+            style={{ flex: 0.3 }}
+            width={1.5}
+            source={require("../js/res/reviews.png")}
+            onClick={() => {
+              this.props.addReview();
+              console.log("yay");
+            }}
+          />
+          <Reviews id={this.props.id} />
         </ViroFlexView>
-        <ViroImage
-          style={{ flex: 0.2, marginLeft: "35%" }}
-          width={2}
-          source={require("../js/res/reviews.png")}
-          onClick={() => {
-            this.props.addReview();
-            console.log("yay");
-          }}
-        />
-        <Reviews id={this.props.id} />
       </ViroFlexView>
     );
   }
@@ -151,17 +152,26 @@ const styles = StyleSheet.create({
     fontFamily: "Cochin",
     color: "#b22222"
   },
-  descriptionReviews: {
-    fontSize: 30,
+  reviews: {
+    fontSize: 20,
     textAlign: "center",
     fontWeight: "bold",
     fontFamily: "Cochin",
     color: "#b22222",
-    flex: 0.4,
-    marginTop: "10%"
+    marginTop: "5%",
+    flex: 0.1
+  },
+  description: {
+    fontSize: 20,
+    textAlign: "center",
+    fontWeight: "bold",
+    fontFamily: "Cochin",
+    color: "#b22222",
+    marginTop: "10%",
+    flex: 0.1
   },
   info: {
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: "bold",
     fontFamily: "Cochin",
     alignItems: "flex-start",
