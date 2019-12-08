@@ -10,14 +10,32 @@ class Reviews extends Component {
   }
 
   componentDidMount() {
-    this.props.getReviewsThunk(this.props.id);
+    // this.props.getReviewsThunk(this.props.id);
   }
 
   render() {
+    let reviews = [
+      "this is the best place ever",
+      "the food here is to die for",
+      "i brought my parents here and they loved it",
+      "the customer service here was pretty bad"
+    ];
     return (
-      <ViroFlexView style={{ flex: 0.2, backgroundColor: "gray" }}>
-        {this.props.reviews.map(review => {
+      <ViroFlexView style={{ flex: 0.5, marginTop: "2%" }}>
+        {/* {this.props.reviews.map(review => {
           return <ViroText style={styles.info} text={review.content} />;
+        })} */}
+        {reviews.map(review => {
+          return (
+            <ViroText
+              style={{
+                textAlign: "center",
+                fontSize: 30,
+                color: "white"
+              }}
+              text={review}
+            />
+          );
         })}
       </ViroFlexView>
     );
@@ -29,25 +47,6 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
   getReviewsThunk: id => dispatch(getReviewsThunk(id))
-});
-
-const styles = StyleSheet.create({
-  subHeadings: {
-    fontSize: 30,
-    textAlign: "center",
-    fontWeight: "bold",
-    fontFamily: "Cochin",
-    color: "#b22222"
-  },
-  info: {
-    fontSize: 20,
-    fontWeight: "bold",
-    fontFamily: "Cochin",
-    alignItems: "flex-start",
-    color: "#0000cd",
-    textAlign: "center",
-    marginTop: "2%"
-  }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Reviews);
