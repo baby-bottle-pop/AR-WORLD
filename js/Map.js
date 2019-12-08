@@ -3,7 +3,6 @@ import { View, Text } from "react-native";
 
 export default class Map extends React.Component {
   render() {
-    console.log("CLICKEDDDDDD");
     return (
       <View
         style={{

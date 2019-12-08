@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { StyleSheet } from "react-native";
-import { ViroText, ViroImage, ViroFlexView } from "react-viro";
+import { ViroText, ViroImage, ViroFlexView, ViroMaterials } from "react-viro";
 import Details from "./Details";
 
 class SingleMarker extends Component {
@@ -32,7 +32,6 @@ class SingleMarker extends Component {
   }
 
   render() {
-    console.log("PROPS", this.props);
     let icon =
       this.props.icon === "/res/city.png"
         ? require("../js/res/city.png")
@@ -45,20 +44,16 @@ class SingleMarker extends Component {
         : null;
 
     let finalObj = this.pointToAR(this.props.busLat, this.props.busLong);
-    console.log(finalObj);
+
     return (
       <ViroFlexView
         style={{ flexDirection: "column" }}
-        width={7}
+        width={8}
         height={20}
-        position={[finalObj.x, 0, finalObj.z]}
+        position={[finalObj.x, 1, finalObj.z]}
         transformBehaviors={["billboard"]}
-        onHover={isHovering => {
-          // if (!isHovering) {
-          //   this.setState({ clicked: false });
-          // }
-        }}
       >
+        {/* xbutton */}
         {this.state.clicked ? (
           <ViroImage
             style={{ flex: 0.05 }}
@@ -69,51 +64,49 @@ class SingleMarker extends Component {
             }}
           />
         ) : null}
-        <ViroImage
-          source={require("./res/directions-icon.png")}
-          style={{ flex: 0.05, width: 1, height: 1 }}
-          onClick={this.props.mapCall}
-        />
+        {/* marker */}
         <ViroFlexView
-          style={{ flexDirection: "column", flex: 0.95, marginTop: "10%" }}
-          position={[finalObj.x, 2, finalObj.z]}
-          transformBehaviors={["billboard"]}
+          style={{
+            flexDirection: "row",
+            flex: 0.1,
+            marginTop: "2%"
+          }}
+          backgroundColor={this.props.color}
         >
+          {/* icon/name  */}
           <ViroFlexView
-            onClick={() => {
-              console.log("i was clickecd");
-              this.setState({ clicked: true });
+            onClick={() => this.setState({ clicked: true })}
+            style={{
+              flexDirection: "row",
+              flex: 0.7,
+              marginLeft: "2%"
             }}
-            style={{ flexDirection: "row", flex: 0.1 }}
-            backgroundColor={this.props.color}
           >
+            {/* icon  */}
             <ViroImage source={icon} style={{ flex: 0.25 }} />
-
-            <ViroFlexView
+            {/* name  */}
+            <ViroText
+              text={this.props.name}
               style={{
                 flex: 0.75,
-                justifyContent: "center",
-                alignItems: "center"
+                textAlign: "center",
+                color: "black",
+                marginTop: "10%",
+                fontSize: 30
               }}
-            >
-              <ViroText
-                text={`${this.props.name}`}
-                // text="HELLO WORLD"
-                style={{
-                  fontFamily: "Cochin",
-                  fontSize: 25,
-                  fontWeight: "bold",
-                  color: "white",
-                  marginTop: "10%",
-                  textAlign: "center"
-                }}
-              />
-            </ViroFlexView>
+            />
           </ViroFlexView>
-          {this.state.clicked ? (
-            <Details id={this.props.id} addReview={this.props.addReview} />
-          ) : null}
+          {/* map  */}
+          <ViroImage
+            source={require("./res/directions-icon.png")}
+            style={{ flex: 0.3 }}
+            onClick={this.props.mapCall}
+          />
         </ViroFlexView>
+        {/* details */}
+        {this.state.clicked ? (
+          <Details id={this.props.id} addReview={this.props.addReview} />
+        ) : null}
       </ViroFlexView>
     );
   }

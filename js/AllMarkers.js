@@ -23,7 +23,7 @@ const AR = props => {
     addReview,
     mapCall
   } = props.sceneNavigator.viroAppProps;
-  console.log(businesses);
+
   return (
     <ViroARScene style={{ flex: 1 }}>
       <ViroARImageMarker target={"targetOne"}>
