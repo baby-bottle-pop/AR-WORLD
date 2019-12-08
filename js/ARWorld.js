@@ -57,7 +57,6 @@ class disARWorld extends Component {
   }
 
   render() {
-    console.log(this.state.clicked);
     return (
       <View style={localStyles.outer}>
         {this.state.map ? (

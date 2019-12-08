@@ -17,17 +17,13 @@ class Details extends Component {
 
   render() {
     let allDetails = this.props.details;
-    console.log(allDetails);
+
     let details = allDetails.filter(detail => {
-      console.log("store", detail);
-      console.log("id", this.props.id);
       return detail.venue.id === this.props.id;
     });
     let venue;
     if (details.length) {
-      console.log("the details", details[0].venue);
       venue = details[0].venue;
-      console.log(venue);
     }
 
     let description;

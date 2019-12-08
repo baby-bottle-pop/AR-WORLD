@@ -32,7 +32,6 @@ class SingleMarker extends Component {
   }
 
   render() {
-    console.log("PROPS", this.props);
     let icon =
       this.props.icon === "/res/city.png"
         ? require("../js/res/city.png")
@@ -45,7 +44,7 @@ class SingleMarker extends Component {
         : null;
 
     let finalObj = this.pointToAR(this.props.busLat, this.props.busLong);
-    console.log(finalObj);
+
     return (
       <ViroFlexView
         style={{ flexDirection: "column" }}
